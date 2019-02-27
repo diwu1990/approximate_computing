@@ -16,6 +16,11 @@ void EXP_POLY_APPR::Init(vector<double> param1, vector<double> param2, uint64_t 
     wce = 0;
     wcre = 0;
     poly_appr.Init(coeff, order, fracWidth, fixed_sim);
+
+    // exp(1) is around 2.7, requiring 2 bits integer
+    temp = exp(1) * pow(2, fracWidth-2);
+    fracPart = modf(temp, &intPart);
+    exp1 = intPart / pow(2, fracWidth-2);
 }
 
 void EXP_POLY_APPR::Report()
@@ -91,7 +96,8 @@ void EXP_POLY_APPR::Eval()
         }
         else
         {
-            appr = poly_appr.Out(in-1)*exp(1);
+            appr = poly_appr.Out(in-1)*exp1;
+            // appr = poly_appr.Out(in-1)*exp(1);
             // printf("(%d) more: ", i);
         }
         // printf("%.10lf\n", appr);

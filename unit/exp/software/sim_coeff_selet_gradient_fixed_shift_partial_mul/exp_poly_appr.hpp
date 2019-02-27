@@ -28,6 +28,11 @@ class EXP_POLY_APPR
     double wce; // Worst Case Error
     double wcre; // Worst Case Relative Error
 
+    double temp;
+    double intPart;
+    double fracPart;
+    double exp1;
+
     POLY_APPR poly_appr;
 
     public:
