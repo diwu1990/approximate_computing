@@ -197,6 +197,7 @@ int main()
                                 {
                                     update = 1;
                                     min_MRE = exp_poly_appr.MRE();
+                                    // printf("%lf\n", min_MRE);
                                     select_coeff = coeff[coeff.size() - 1];
                                     select_order = order[order.size() - 1];
                                 }
@@ -220,6 +221,7 @@ int main()
                                 {
                                     update = 1;
                                     min_MRE = exp_poly_appr.MRE();
+                                    // printf("%lf\n", min_MRE);
                                     select_coeff = coeff[coeff.size() - 1];
                                     select_order = order[order.size() - 1];
                                 }
