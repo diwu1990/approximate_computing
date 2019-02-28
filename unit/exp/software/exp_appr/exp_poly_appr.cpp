@@ -96,7 +96,10 @@ void EXP_POLY_APPR::Eval()
         }
         else
         {
-            appr = poly_appr.Out(in-1)*exp1;
+            temp = poly_appr.Out(in-1) * exp1 * pow(2, fracWidth-2);
+            fracPart = modf(temp, &intPart);
+            appr = intPart / pow(2, fracWidth-2);
+            // appr = poly_appr.Out(in-1)*exp1;
             // appr = poly_appr.Out(in-1)*exp(1);
             // printf("(%d) more: ", i);
         }
