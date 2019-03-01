@@ -1,0 +1,109 @@
+for all simulations, only three input parameters, and maximum two output parameters
+input:
+1. latency
+2. input distribution
+3. bit width
+4. poly
+5. multiplier
+output:
+1. weighted accuracy
+
+
+// assume truncation to 16 bit
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+algorithm appr accuracy evaluation
+choice on poly
+
+using precise mul
+
+model
+input:
+1. latency
+2. input distribution
+3. bit width
+4. poly with constraints *******************
+5. precise multiplier
+output:
+1. poly with best weighted accuracy
+
+
+figure: fixing bit width (8), change distribution (uniform to gaussian, for gaussian varying mean and stddiv))
+(Y-accuracy, X-latency, four curves (for four distributions)
+conclusion: for different distribution, we can always find approximate poly with good enough accuracy
+
+figure: using one of the poly, test it on different input distribution.
+conclusion: not optimal but still good enough for other distribution
+
+
+do the truncation from 16 bit
+figure: fixing a certain distribution (gaussian, 0.75, 0.1), change bit width from 16 to 8 to check the performance change.
+(Y-accuracy, X-latency, three curves for all bit width)
+conclusion:
+1. for a certain distribution, the data bit width will influence the best approximate poly, (maybe due to truncation error, conjecture).
+2. always find approximate poly with good enough accuracy
+
+figure: fixing a 16 bit poly, and test accuracy from 16 to 8, seeming like truncation
+conclusion: leading to sub-optimal result
+
+
+equation: find the maximal cycle value to be zero, the cumulative shifting value.
+
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+cross level optimization evaluation
+choice on mul
+
+
+just use 8 bit
+
+first step:
+input:
+1. latency
+2. input distribution (gaussian 0.75, 0.1)
+3. bit width
+4. poly with constraints *******************
+5. precise multiplier
+output:
+1. poly with best weighted accuracy
+
+get from previous algorithm level approximation
+
+write error model, equation for specific model
+
+second step:
+input:
+1. latency
+2. input distribution
+3. bit width
+4. poly with best weighted accuracy from first step
+5. multiple approximate multiplier from the lib
+output:
+1. approximate mul with best weighted accuracy
+
+
+figure: fixing bit width, find the optimal mul for varying distribution
+conclusion: different distribution requires different appr mul for best accuracy
+
+figure: fixing distribution (0.75, 0.1) and bit width, change mul, get different accuracy
+conclusion: prove our previous formulation qualitively.
+
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+hardware sim, both algorithm level and cross level optimization, show the saving in both due to appr compared to the reference
+area, delay, throughput for different bit width
+
+figure: for one gaussian distribution (0.75, 0.1), build optimal hardware (for different length). no multiple distribution.
+(X-EDP, Y-Accuracy, each curve for one bit width of different terms, both precise and appr mul)
+conclusion: show dynamical trade-off between accuracy and enery-delay prod for *****different bit width****** under the same input distribution.
+
+table:
+            input distribution (all uniform?), latency (cycle), range of WMRE, Area, delay, power, energy
+bit width
+ref[1]
+ref[2]
+
+figure: try different mul, get the curve for design time choice for mul
+(X-mul index from the lite lib, Y-accuracy-EDP-product)
+conclusion: possibly a convex curve, get the best curve.
+
