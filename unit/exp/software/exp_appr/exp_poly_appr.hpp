@@ -7,6 +7,7 @@
 #include <cmath>
 #include <string>
 #include <iostream>
+#include <random>
 #include "poly_appr.hpp"
 using namespace std;
 
@@ -34,6 +35,10 @@ class EXP_POLY_APPR
     double exp1;
 
     POLY_APPR poly_appr;
+
+    int totalCnt;
+    int N;
+    vector<int> weight;
 
     public:
         void Help();
