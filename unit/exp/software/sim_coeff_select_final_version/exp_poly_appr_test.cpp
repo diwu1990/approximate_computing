@@ -4,45 +4,54 @@
 
 int main()
 {
-    vector<double> coeff;
-    vector<double> order;
     uint64_t fracWidth = 8;
     string fixed_sim;
-    double in;
+    fixed_sim = "fixed";
     double threshold;
     
-    fixed_sim = "fixed";
-    // fixed_sim = "float";
-    in = 0.95;
-    threshold = 0.375;
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // 0.75 0.1, 8 bit
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    threshold = 0.875;
+    vector<double> total_coeff = {1 , 1 ,  0.5 ,0.25  ,  -0.125 , 0.0625 , 0.03125};
+    vector<double> total_order = {0,  1,   2 ,  3  , 4   ,4  , 4};
+
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // 0.5 0.1, 8 bit
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // threshold = 0.875;
+    // vector<double> total_coeff = {1 , 1 ,  0.5 ,0.25  ,  -0.125 , 0.0625 , 0.03125};
+    // vector<double> total_order = {0,  1,   2 ,  3  , 4   ,4  , 4};
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // 0.25 0.1, 8 bit
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // threshold = 0.875;
+    // vector<double> total_coeff = {1 , 1 ,  0.5 ,0.25  ,  -0.125 , 0.0625 , 0.03125};
+    // vector<double> total_order = {0,  1,   2 ,  3  , 4   ,4  , 4};
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // uniform, 8 bit
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // threshold = 0.875;
+    // vector<double> total_coeff = {1 , 1 ,  0.5 ,0.25  ,  -0.125 , 0.0625 , 0.03125};
+    // vector<double> total_order = {0,  1,   2 ,  3  , 4   ,4  , 4};
+
+
+    int max_term = total_coeff.size();
+    vector<double> coeff = {1};
+    vector<double> order = {0};
     EXP_POLY_APPR exp_poly_appr;
 
-    coeff = {1 , 1};
-    order = {0  ,1};
-    exp_poly_appr.Init(coeff, order, fracWidth, threshold, fixed_sim);
-    exp_poly_appr.Eval();
-    printf("MAE(%.6lf), MSE(%.6lf), MRE(%.6lf), WCE(%.6lf), WCRE(%.6lf)\n", exp_poly_appr.MAE(), exp_poly_appr.MSE(), exp_poly_appr.MRE(), exp_poly_appr.WCE(), exp_poly_appr.WCRE());
-    printf("\n");
-
-    coeff = {1 , 1 ,  0.5};
-    order = {0  ,1  , 2};
-    exp_poly_appr.Init(coeff, order, fracWidth, threshold, fixed_sim);
-    exp_poly_appr.Eval();
-    printf("MAE(%.6lf), MSE(%.6lf), MRE(%.6lf), WCE(%.6lf), WCRE(%.6lf)\n", exp_poly_appr.MAE(), exp_poly_appr.MSE(), exp_poly_appr.MRE(), exp_poly_appr.WCE(), exp_poly_appr.WCRE());
-    printf("\n");
-
-    coeff = {1 , 1 ,  0.5, 0.125};
-    order = {0  ,1  , 2  , 3};
-    exp_poly_appr.Init(coeff, order, fracWidth, threshold, fixed_sim);
-    exp_poly_appr.Eval();
-    printf("MAE(%.6lf), MSE(%.6lf), MRE(%.6lf), WCE(%.6lf), WCRE(%.6lf)\n", exp_poly_appr.MAE(), exp_poly_appr.MSE(), exp_poly_appr.MRE(), exp_poly_appr.WCE(), exp_poly_appr.WCRE());
-    printf("\n");
-
-    coeff = {1 , 1 ,  0.5, 0.125,   -0.0625};
-    order = {0  ,1  , 2  , 3 ,  4 };
-    exp_poly_appr.Init(coeff, order, fracWidth, threshold, fixed_sim);
-    exp_poly_appr.Eval();
-    printf("MAE(%.6lf), MSE(%.6lf), MRE(%.6lf), WCE(%.6lf), WCRE(%.6lf)\n", exp_poly_appr.MAE(), exp_poly_appr.MSE(), exp_poly_appr.MRE(), exp_poly_appr.WCE(), exp_poly_appr.WCRE());
-    printf("\n");
+    for (int i = coeff.size(); i < max_term; ++i)
+    {
+        coeff.push_back(total_coeff[i]);
+        order.push_back(total_order[i]);
+        exp_poly_appr.Init(coeff, order, fracWidth, threshold, fixed_sim);
+        exp_poly_appr.Eval();
+        printf("Length(%lu): MRE(%.6lf), MSE(%.6lf), MAE(%.6lf), WCE(%.6lf), WCRE(%.6lf)\n", coeff.size(), exp_poly_appr.MRE(), exp_poly_appr.MSE(), exp_poly_appr.MAE(), exp_poly_appr.WCE(), exp_poly_appr.WCRE());
+        printf("\n");
+    }
 
 }

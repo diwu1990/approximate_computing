@@ -35,7 +35,7 @@ void EXP_POLY_APPR::Init(vector<double> param1, vector<double> param2, uint64_t 
     // Gaussian distribution
     double number;
     default_random_engine generator;
-    normal_distribution<double> distribution(0.75,0.1);
+    normal_distribution<double> distribution(0.25,0.1);
     for (int i = 0; i < (totalCnt)*N; ++i)
     {
         number = distribution(generator);

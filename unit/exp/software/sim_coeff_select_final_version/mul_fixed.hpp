@@ -21,6 +21,7 @@ class MUL_FIXED
     double c;
     double c_int;
     double c_frac;
+    int sign;
 
     public:
         double Out(double, double, uint64_t);

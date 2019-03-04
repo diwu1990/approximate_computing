@@ -82,11 +82,17 @@ output:
 1. approximate mul with best weighted accuracy
 
 
-figure: fixing bit width, find the optimal mul for varying distribution
-conclusion: different distribution requires different appr mul for best accuracy
+cross level optimize the hardware cost, but slightly increase the error, so the focus on the best wmre can achieve at different bit width and distribution
+
+
+figure: fixing bit width (8 bit), find the optimal mul for varying distribution (different poly)
+conclusion:
+1. different distribution requires different appr mul for best accuracy, 
+2. accuracy loss compared to precise is small
 
 figure: fixing distribution (0.75, 0.1) and bit width, change mul, get different accuracy
-conclusion: prove our previous formulation qualitively.
+conclusion: 
+1. the error pattern of mul for different bit width is similar
 
 % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
 % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
@@ -97,13 +103,15 @@ figure: for one gaussian distribution (0.75, 0.1), build optimal hardware (for d
 (X-EDP, Y-Accuracy, each curve for one bit width of different terms, both precise and appr mul)
 conclusion: show dynamical trade-off between accuracy and enery-delay prod for *****different bit width****** under the same input distribution.
 
+
 table:
-            input distribution (all uniform?), latency (cycle), range of WMRE, Area, delay, power, energy
-bit width
+                                    input distribution (all uniform?), latency (cycle), range of WMRE, Area, delay, power, energy
+algorithm level (different bits)
+cross level (different bits)
 ref[1]
 ref[2]
 
-figure: try different mul, get the curve for design time choice for mul
+figure: try different mul, get the curve for design time choice for mul, fixed poly for 8-bit 
 (X-mul index from the lite lib, Y-accuracy-EDP-product)
-conclusion: possibly a convex curve, get the best curve.
+conclusion: possibly a convex curve, get the best curve. static trade-off
 
