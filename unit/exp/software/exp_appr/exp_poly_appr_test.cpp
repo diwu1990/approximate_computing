@@ -8,7 +8,7 @@ int main()
     string fixed_sim;
     fixed_sim = "fixed";
     double threshold;
-    
+    double in = 0.8;
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // 0.75 0.1, 8 bit
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -50,6 +50,7 @@ int main()
         order.push_back(total_order[i]);
         exp_poly_appr.Init(coeff, order, fracWidth, threshold, fixed_sim);
         exp_poly_appr.Eval();
+        printf("%lf\n", exp_poly_appr.Out(0.8));
         printf("Length(%lu): MRE(%.6lf), MSE(%.6lf), MAE(%.6lf), WCE(%.6lf), WCRE(%.6lf)\n", coeff.size(), exp_poly_appr.MRE(), exp_poly_appr.MSE(), exp_poly_appr.MAE(), exp_poly_appr.WCE(), exp_poly_appr.WCRE());
         printf("\n");
     }
