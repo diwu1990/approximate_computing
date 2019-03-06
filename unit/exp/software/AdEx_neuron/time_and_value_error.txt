@@ -1,0 +1,203 @@
+>> spiking_plot_tonic_spiking
+
+nrmsd_tonic_spiking_fixed_exp =
+
+   3.0184e-06
+
+
+terr_tonic_spiking_fixed_exp =
+
+     0
+
+
+nrmsd_tonic_spiking_appr_mul_061 =
+
+    0.0140
+
+
+terr_tonic_spiking_appr_mul_061 =
+
+    0.0044
+
+
+nrmsd_tonic_spiking_appr_mul_049 =
+
+    0.0057
+
+
+terr_tonic_spiking_appr_mul_049 =
+
+   5.5006e-04
+
+
+nrmsd_tonic_spiking_appr_mul_034 =
+
+    0.0020
+
+
+terr_tonic_spiking_appr_mul_034 =
+
+     0
+
+
+nrmsd_tonic_spiking_precise_mul =
+
+    0.0019
+
+
+terr_tonic_spiking_precise_mul =
+
+     0
+
+>> spiking_plot_delayed_accelerating
+
+nrmsd_delayed_accelerating_fixed_exp =
+
+   1.2937e-05
+
+
+terr_delayed_accelerating_fixed_exp =
+
+     0
+
+
+nrmsd_delayed_accelerating_appr_mul_061 =
+
+    0.0116
+
+
+terr_delayed_accelerating_appr_mul_061 =
+
+    0.0025
+
+
+nrmsd_delayed_accelerating_appr_mul_049 =
+
+    0.0115
+
+
+terr_delayed_accelerating_appr_mul_049 =
+
+    0.0013
+
+
+nrmsd_delayed_accelerating_appr_mul_034 =
+
+    0.0113
+
+
+terr_delayed_accelerating_appr_mul_034 =
+
+    0.0013
+
+
+nrmsd_delayed_accelerating_precise_mul =
+
+    0.0110
+
+
+terr_delayed_accelerating_precise_mul =
+
+    0.0013
+
+>> spiking_plot_initial_burst
+
+nrmsd_initial_burst_fixed_exp =
+
+   2.2849e-06
+
+
+terr_initial_burst_fixed_exp =
+
+     0
+
+
+nrmsd_initial_burst_appr_mul_061 =
+
+    0.0053
+
+
+terr_initial_burst_appr_mul_061 =
+
+    0.0034
+
+
+nrmsd_initial_burst_appr_mul_049 =
+
+    0.0047
+
+
+terr_initial_burst_appr_mul_049 =
+
+    0.0029
+
+
+nrmsd_initial_burst_appr_mul_034 =
+
+    0.0052
+
+
+terr_initial_burst_appr_mul_034 =
+
+    0.0029
+
+
+nrmsd_initial_burst_precise_mul =
+
+    0.0052
+
+
+terr_initial_burst_precise_mul =
+
+    0.0025
+
+>> spiking_plot_regular_bursting
+
+nrmsd_regular_bursting_fixed_exp =
+
+   2.4868e-06
+
+
+terr_regular_bursting_fixed_exp =
+
+     0
+
+
+nrmsd_regular_bursting_appr_mul_061 =
+
+    0.0171
+
+
+terr_regular_bursting_appr_mul_061 =
+
+    0.0090
+
+
+nrmsd_regular_bursting_appr_mul_049 =
+
+    0.0035
+
+
+terr_regular_bursting_appr_mul_049 =
+
+   3.7879e-04
+
+
+nrmsd_regular_bursting_appr_mul_034 =
+
+    0.0064
+
+
+terr_regular_bursting_appr_mul_034 =
+
+   1.8939e-04
+
+
+nrmsd_regular_bursting_precise_mul =
+
+    0.0058
+
+
+terr_regular_bursting_precise_mul =
+
+   1.8939e-04
