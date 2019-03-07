@@ -10,69 +10,12 @@ void EXP_POLY_APPR::Init(vector<double> param1, vector<double> param2, uint64_t 
     input = 0;
     output = 0;
     term_cnt = coeff.size();
-    // mae = 0;
-    // mse = 0;
-    // mre = 0;
-    // wce = 0;
-    // wcre = 0;
+
     poly_appr.Init(coeff, order, fracWidth, fixed_sim);
 
-    // exp(1) is around 2.7, requiring 2 bits integer
-    temp = exp(1) * pow(2, fracWidth-2);
-    fracPart = modf(temp, &intPart);
-    exp1 = intPart / pow(2, fracWidth-2);
-
-    // N = 64;
-    // totalCnt = min(1UL<<fracWidth,(weight.max_size()>>1)/N);
-    // printf("%u, %u\n", totalCnt, weight.max_size());
-
-    // weight.resize(totalCnt);
-    // for (int i = 0; i < totalCnt; ++i)
-    // {
-    //     weight[i] = 0;
-    // }
-    
-    // // Gaussian distribution
-    // double number;
-    // default_random_engine generator;
-    // normal_distribution<double> distribution(0.25,0.1);
-    // for (int i = 0; i < (totalCnt)*N; ++i)
-    // {
-    //     number = distribution(generator);
-    //     if ((number>=0.0) && (number<1.0))
-    //     {
-    //         ++weight[int(number*totalCnt)];
-    //     }
-    // }
-
-    // uniform distribution
-    // for (int i = 0; i < (totalCnt); ++i)
-    // {
-    //     weight[i] = N;
-    // }
-
-    // step distribution
-    // for (int i = 0; i < (totalCnt); ++i)
-    // {
-    //     if (i < totalCnt/2)
-    //     {
-    //         weight[i] = 0;
-    //     }
-    //     else
-    //     {
-    //         weight[i] = N*2;
-    //     }
-    // }
-
-    // for (int i = 0; i < (totalCnt); ++i)
-    // {
-    //     printf("%d\n", weight[i]);
-    //     for (int j = 0; j < weight[i]; ++j)
-    //     {
-    //         printf("*");
-    //     }
-    //     printf("\n");
-    // }
+    // exp(1) is around 2.7, requiring 2 bits integer, so have format of {2-bit.(fracWidth-2)-bit}
+    truncation.Init(fracWidth-2);
+    exp1 = truncation.Out(exp(1));
 
 }
 
@@ -92,6 +35,7 @@ void EXP_POLY_APPR::Help()
     printf("\n1. inst.Init() method:\n");
     printf("Configure the EXP_POLY_APPR inst.\n");
     printf("Parameters: Vector of Coefficients, Vector of Orders, Data Fraction Width, Operating Mode\n");
+    printf("Input is fracWidth-bit fraction, output is {2-bit.fracWidth-bit}.\n");
 
     printf("\n2. inst.Report() method:\n");
     printf("Report Instance Configuration.\n");
@@ -123,83 +67,31 @@ void EXP_POLY_APPR::Help()
 double EXP_POLY_APPR::Out(double param1)
 {
     input = param1;
-    output = poly_appr.Out(input);
+    // output = poly_appr.Out(input);
+
+    // output at this point has format {2.fracWidth}
+    if (input < threshold)
+    {
+        // printf("less\n");
+        output = poly_appr.Out(input);
+    }
+    else
+    {
+        // printf("more\n");
+        // printf("%lf\n", poly_appr.Out(input-1));
+        output = poly_appr.Out(input-1);
+    }
+
+    if (input < threshold)
+    {
+        // {2,fracWidth-2} output multiply by e^0 with format {2,fracWidth-2}
+        output = mul_fixed.Out(truncation.Out(output), 1, fracWidth-2);
+    }
+    else
+    {
+        // {2,fracWidth-2} output multiply by e^1 with format {2,fracWidth-2}
+        output = mul_fixed.Out(truncation.Out(output), exp1, fracWidth-2);
+    }
+    // output at this point has format {2.fracWidth-2}
     return output;
 }
-
-// void EXP_POLY_APPR::Eval()
-// {
-//     mae = 0;
-//     mse = 0;
-//     mre = 0;
-//     wce = 0;
-//     wcre = 0;
-//     double appr;
-//     double orig;
-//     double in;
-//     double absError;
-
-
-    
-
-//     for (int i = 0; i < (totalCnt); ++i)
-//     {
-//         in = (double)(i/totalCnt);
-//         orig = exp(in);
-//         if (in < threshold)
-//         {
-//             appr = poly_appr.Out(in);
-//             // printf("(%d) less: ", i);
-//         }
-//         else
-//         {
-//             temp = poly_appr.Out(in-1) * exp1 * pow(2, fracWidth-2);
-//             fracPart = modf(temp, &intPart);
-//             appr = intPart / pow(2, fracWidth-2);
-//             // appr = poly_appr.Out(in-1)*exp1;
-//             // appr = poly_appr.Out(in-1)*exp(1);
-//             // printf("(%d) more: ", i);
-//         }
-//         // printf("%.10lf\n", appr);
-//         absError = abs(appr - orig);
-//         mae += absError * weight[i];
-//         mse += pow(absError,2.0) * weight[i];
-//         mre += absError/orig * weight[i];
-//         if (wce < absError)
-//         {
-//             wce = absError;
-//         }
-//         if (wcre < absError/orig)
-//         {
-//             wcre = absError/orig;
-//         }
-//     }
-//     mae /= totalCnt;
-//     mse /= totalCnt;
-//     mre /= totalCnt;
-// }
-
-// double EXP_POLY_APPR::MAE()
-// {
-//     return mae;
-// }
-
-// double EXP_POLY_APPR::MSE()
-// {
-//     return mse;
-// }
-
-// double EXP_POLY_APPR::MRE()
-// {
-//     return mre;
-// }
-
-// double EXP_POLY_APPR::WCE()
-// {
-//     return wce;
-// }
-
-// double EXP_POLY_APPR::WCRE()
-// {
-//     return wcre;
-// }

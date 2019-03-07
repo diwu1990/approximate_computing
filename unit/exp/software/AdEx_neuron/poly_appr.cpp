@@ -64,9 +64,7 @@ void POLY_APPR::Init(vector<double> param1, vector<double> param2, uint64_t para
     prod = 0;
     shift = 0;
     shift_temp = 0;
-    temp = 0;
-    intPart = 0;
-    fracPart = 0;
+    truncation.Init(fracWidth);
 }
 
 void POLY_APPR::Report()
@@ -112,9 +110,7 @@ double POLY_APPR::Out(double param1)
         {
             // 1st order equals to the shift of input
             // get the fixed point value via truncation
-            temp = input * coeff[0] * pow(2, fracWidth);
-            fracPart = modf(temp, &intPart);
-            prod = intPart / pow(2, fracWidth);
+            prod = truncation.Out(input * coeff[0]);
             // prod = ((int64_t)((input * coeff[0]) * pow(2, fracWidth))) / pow(2, fracWidth);
         }
         
@@ -128,9 +124,7 @@ double POLY_APPR::Out(double param1)
         }
 
         // shift is the shifted value of the current prod
-        temp = prod * abs(coeff[1] / coeff[0]) * pow(2, fracWidth);
-        fracPart = modf(temp, &intPart);
-        shift_temp = intPart / pow(2, fracWidth);
+        shift_temp = truncation.Out(prod * abs(coeff[1] / coeff[0]));
         // shift_temp = ((int64_t)((prod * abs(coeff[1] / coeff[0])) * pow(2, fracWidth))) / pow(2, fracWidth);
         if (coeff[1] * coeff[0] >= 0)
         {
@@ -149,9 +143,7 @@ double POLY_APPR::Out(double param1)
             // printf("%.10lf\n", output);
             if (i == 1 && order[0] == 0)
             {
-                temp = input * coeff[1] * pow(2, fracWidth);
-                fracPart = modf(temp, &intPart);
-                prod = intPart / pow(2, fracWidth);
+                prod = truncation.Out(input * coeff[1]);
                 // prod = ((int64_t)((input * coeff[1]) * pow(2, fracWidth))) / pow(2, fracWidth);
                 // printf("b1\n");
             }
@@ -170,9 +162,7 @@ double POLY_APPR::Out(double param1)
 
             if (i < term_cnt-1)
             {
-                temp = prod * abs(coeff[i+1] / coeff[i]) * pow(2, fracWidth);
-                fracPart = modf(temp, &intPart);
-                shift_temp = intPart / pow(2, fracWidth);
+                shift_temp = truncation.Out(prod * abs(coeff[i+1] / coeff[i]));
                 // shift_temp = ((int64_t)((prod * abs(coeff[i+1] / coeff[i])) * pow(2, fracWidth))) / pow(2, fracWidth);
                 if (coeff[i+1] * coeff[i] >= 0)
                 {
@@ -248,7 +238,7 @@ double POLY_APPR::Out(double param1)
             }
             else
             {
-                prod = mul_fixed.Out(input,shift,fracWidth);
+                prod = input*shift;
             }
 
             if (i < term_cnt-1)

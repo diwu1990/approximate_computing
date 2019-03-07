@@ -86,6 +86,12 @@ void ADEX_NEURON::Calc(double param1, double param2)
 
         exp_in_frac = modf(exp_in, &exp_in_int);
 
+        if (exp_in_frac < 0)
+        {
+            exp_in_frac++;
+            exp_in_int--;
+        }
+
         double expout = truncation.Out(exp_poly_appr.Out(exp_in_frac) * truncation.Out(exp(exp_in_int)));
         // double expout = truncation.Out(exp(exp_in));
 

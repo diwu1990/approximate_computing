@@ -22,8 +22,8 @@ int main()
     // fp = fopen("neuron_spiking_out_tonic_spiking_appr_mul_049.txt", "w+");
     // fp = fopen("neuron_spiking_out_tonic_spiking_appr_mul_061.txt", "w+");
     // fp = fopen("neuron_spiking_out_tonic_spiking_appr_mul_034.txt", "w+");
-    fp = fopen("neuron_spiking_out_tonic_spiking_float.txt", "w+");
-    vector<double> neuron_param = {200, 10, -70, -50, 2,   2,  30,   0, -58, 500, 0, 0.1};
+    // fp = fopen("neuron_spiking_out_tonic_spiking_float.txt", "w+");
+    // vector<double> neuron_param = {200, 10, -70, -50, 2,   2,  30,   0, -58, 500, 0, 0.1};
     // // inital burst
     // fp = fopen("neuron_spiking_out_initial_burst_fixed_exp.txt", "w+");
     // fp = fopen("neuron_spiking_out_initial_burst_precise_mul.txt", "w+");
@@ -45,9 +45,9 @@ int main()
     // fp = fopen("neuron_spiking_out_delayed_accelerating_precise_mul.txt", "w+");
     // fp = fopen("neuron_spiking_out_delayed_accelerating_appr_mul_049.txt", "w+");
     // fp = fopen("neuron_spiking_out_delayed_accelerating_appr_mul_061.txt", "w+");
-    // fp = fopen("neuron_spiking_out_delayed_accelerating_appr_mul_034.txt", "w+");
+    fp = fopen("neuron_spiking_out_delayed_accelerating_appr_mul_034.txt", "w+");
     // fp = fopen("neuron_spiking_out_delayed_accelerating_float.txt", "w+");
-    // vector<double> neuron_param = {200, 12, -70, -50, 2, -10, 300,   0, -58, 300, 0, 0.1};
+    vector<double> neuron_param = {200, 12, -70, -50, 2, -10, 300,   0, -58, 300, 0, 0.1};
 
     membrane_potential[0] = neuron_param[2];
     adaptive_term[0] = 0;
@@ -57,10 +57,10 @@ int main()
     // adaptive_term[0] = 0.0609010000000000;
 
     // exp config
-    uint64_t fracWidth = 31;
+    uint64_t fracWidth = 32;
     string fixed_sim;
-    // fixed_sim = "fixed";
-    fixed_sim = "float";
+    fixed_sim = "fixed";
+    // fixed_sim = "float";
     double threshold;
     
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

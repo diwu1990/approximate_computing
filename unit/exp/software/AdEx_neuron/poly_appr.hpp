@@ -8,6 +8,7 @@
 #include <string>
 #include <iostream>
 #include "mul_fixed.hpp"
+#include "truncation.hpp"
 using namespace std;
 
 class POLY_APPR
@@ -25,11 +26,9 @@ class POLY_APPR
     double prod;
     double shift;
     double shift_temp;
-    double temp;
-    double intPart;
-    double fracPart;
 
     MUL_FIXED mul_fixed;
+    TRUNCATION truncation;
 
     public:
         void Help();
