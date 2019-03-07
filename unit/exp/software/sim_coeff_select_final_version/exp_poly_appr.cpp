@@ -17,10 +17,9 @@ void EXP_POLY_APPR::Init(vector<double> param1, vector<double> param2, uint64_t 
     wcre = 0;
     poly_appr.Init(coeff, order, fracWidth, fixed_sim);
 
-    // exp(1) is around 2.7, requiring 2 bits integer
-    temp = exp(1) * pow(2, fracWidth-2);
-    fracPart = modf(temp, &intPart);
-    exp1 = intPart / pow(2, fracWidth-2);
+    // exp(1) is around 2.7, requiring 2 bits integer, so have format of {2-bit.(fracWidth-2)-bit}
+    truncation.Init(fracWidth-2);
+    exp1 = truncation.Out(exp(1));
 
     totalCnt = 1UL<<fracWidth;
     // printf("%d\n", totalCnt);
@@ -32,24 +31,24 @@ void EXP_POLY_APPR::Init(vector<double> param1, vector<double> param2, uint64_t 
         weight[i] = 0;
     }
     
-    // Gaussian distribution
-    double number;
-    default_random_engine generator;
-    normal_distribution<double> distribution(0.25,0.1);
-    for (int i = 0; i < (totalCnt)*N; ++i)
-    {
-        number = distribution(generator);
-        if ((number>=0.0) && (number<1.0))
-        {
-            ++weight[int(number*totalCnt)];
-        }
-    }
+    // // Gaussian distribution
+    // double number;
+    // default_random_engine generator;
+    // normal_distribution<double> distribution(0.25,0.1);
+    // for (int i = 0; i < (totalCnt)*N; ++i)
+    // {
+    //     number = distribution(generator);
+    //     if ((number>=0.0) && (number<1.0))
+    //     {
+    //         ++weight[int(number*totalCnt)];
+    //     }
+    // }
 
     // uniform distribution
-    // for (int i = 0; i < (totalCnt); ++i)
-    // {
-    //     weight[i] = N;
-    // }
+    for (int i = 0; i < (totalCnt); ++i)
+    {
+        weight[i] = N;
+    }
 
     // step distribution
     // for (int i = 0; i < (totalCnt); ++i)
@@ -92,6 +91,7 @@ void EXP_POLY_APPR::Help()
     printf("\n1. inst.Init() method:\n");
     printf("Configure the EXP_POLY_APPR inst.\n");
     printf("Parameters: Vector of Coefficients, Vector of Orders, Data Fraction Width, Operating Mode\n");
+    printf("Input is fracWidth-bit fraction, output is {2-bit.fracWidth-bit}.\n");
 
     printf("\n2. inst.Report() method:\n");
     printf("Report Instance Configuration.\n");
@@ -123,7 +123,32 @@ void EXP_POLY_APPR::Help()
 double EXP_POLY_APPR::Out(double param1)
 {
     input = param1;
-    output = poly_appr.Out(input);
+    // output = poly_appr.Out(input);
+
+    // output at this point has format {2.fracWidth}
+    if (input < threshold)
+    {
+        // printf("less\n");
+        output = poly_appr.Out(input);
+    }
+    else
+    {
+        // printf("more\n");
+        // printf("%lf\n", poly_appr.Out(input-1));
+        output = poly_appr.Out(input-1);
+    }
+
+    if (input < threshold)
+    {
+        // {2,fracWidth-2} output multiply by e^0 with format {2,fracWidth-2}
+        output = mul_fixed.Out(truncation.Out(output), 1, fracWidth-2);
+    }
+    else
+    {
+        // {2,fracWidth-2} output multiply by e^1 with format {2,fracWidth-2}
+        output = mul_fixed.Out(truncation.Out(output), exp1, fracWidth-2);
+    }
+    // output at this point has format {2.fracWidth-2}
     return output;
 }
 
@@ -139,27 +164,34 @@ void EXP_POLY_APPR::Eval()
     double in;
     double absError;
 
-
-    
-
     for (int i = 0; i < (totalCnt); ++i)
     {
         in = (double)(i/pow(2,fracWidth));
         orig = exp(in);
+        // appr at this point has format {2.fracWidth}
         if (in < threshold)
         {
+            // printf("less\n");
             appr = poly_appr.Out(in);
-            // printf("(%d) less: ", i);
         }
         else
         {
-            temp = poly_appr.Out(in-1) * exp1 * pow(2, fracWidth-2);
-            fracPart = modf(temp, &intPart);
-            appr = intPart / pow(2, fracWidth-2);
-            // appr = poly_appr.Out(in-1)*exp1;
-            // appr = poly_appr.Out(in-1)*exp(1);
-            // printf("(%d) more: ", i);
+            // printf("more\n");
+            // printf("%lf\n", poly_appr.Out(in-1));
+            appr = poly_appr.Out(in-1);
         }
+
+        if (in < threshold)
+        {
+            // {2,fracWidth-2} appr multiply by e^0 with format {2,fracWidth-2}
+            appr = mul_fixed.Out(truncation.Out(appr), 1, fracWidth-2);
+        }
+        else
+        {
+            // {2,fracWidth-2} appr multiply by e^1 with format {2,fracWidth-2}
+            appr = mul_fixed.Out(truncation.Out(appr), exp1, fracWidth-2);
+        }
+
         // printf("%.10lf\n", appr);
         absError = abs(appr - orig);
         mae += absError * weight[i];

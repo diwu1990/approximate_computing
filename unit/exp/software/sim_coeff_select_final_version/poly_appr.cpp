@@ -64,9 +64,7 @@ void POLY_APPR::Init(vector<double> param1, vector<double> param2, uint64_t para
     prod = 0;
     shift = 0;
     shift_temp = 0;
-    temp = 0;
-    intPart = 0;
-    fracPart = 0;
+    truncation.Init(fracWidth);
 }
 
 void POLY_APPR::Report()
@@ -112,10 +110,7 @@ double POLY_APPR::Out(double param1)
         {
             // 1st order equals to the shift of input
             // get the fixed point value via truncation
-            temp = input * coeff[0] * pow(2, fracWidth);
-            fracPart = modf(temp, &intPart);
-            prod = intPart / pow(2, fracWidth);
-            // prod = ((int64_t)((input * coeff[0]) * pow(2, fracWidth))) / pow(2, fracWidth);
+            prod = truncation.Out(input * coeff[0]);
         }
         
         // use mul_appr to calculate high order
@@ -127,11 +122,7 @@ double POLY_APPR::Out(double param1)
             }
         }
 
-        // shift is the shifted value of the current prod
-        temp = prod * abs(coeff[1] / coeff[0]) * pow(2, fracWidth);
-        fracPart = modf(temp, &intPart);
-        shift_temp = intPart / pow(2, fracWidth);
-        // shift_temp = ((int64_t)((prod * abs(coeff[1] / coeff[0])) * pow(2, fracWidth))) / pow(2, fracWidth);
+        shift_temp = truncation.Out(prod * abs(coeff[1] / coeff[0]));
         if (coeff[1] * coeff[0] >= 0)
         {
             shift = shift_temp;
@@ -140,40 +131,28 @@ double POLY_APPR::Out(double param1)
         {
             shift = 0 - shift_temp;
         }
-        // printf("%lf, %lf\n", prod, shift);
 
         for (int i = 1; i < term_cnt; ++i)
         {
             output += prod;
             // printf("i=%d: sum(%lf), prod(%lf), shift(%lf).\n", i, output, prod, shift);
-            // printf("%.10lf\n", output);
             if (i == 1 && order[0] == 0)
             {
-                temp = input * coeff[1] * pow(2, fracWidth);
-                fracPart = modf(temp, &intPart);
-                prod = intPart / pow(2, fracWidth);
-                // prod = ((int64_t)((input * coeff[1]) * pow(2, fracWidth))) / pow(2, fracWidth);
-                // printf("b1\n");
+                prod = truncation.Out(input * coeff[1]);
             }
             else if (order[i-1] == order[i])
             {
                 prod = shift;
-                // printf("%dth and %dth are the same order, product == shift.\n", i-1, i);
-                // printf("b2\n");
             }
             else
             {
+                // all the internel multiplication has the format of {2-bit.fracWidth-bit}
                 prod = mul_fixed.Out(input,shift,fracWidth);
-                // printf("%lf = %lf * %lf\n", prod, input, shift);
-                // printf("b3\n");
             }
 
             if (i < term_cnt-1)
             {
-                temp = prod * abs(coeff[i+1] / coeff[i]) * pow(2, fracWidth);
-                fracPart = modf(temp, &intPart);
-                shift_temp = intPart / pow(2, fracWidth);
-                // shift_temp = ((int64_t)((prod * abs(coeff[i+1] / coeff[i])) * pow(2, fracWidth))) / pow(2, fracWidth);
+                shift_temp = truncation.Out(prod * abs(coeff[i+1] / coeff[i]));
                 if (coeff[i+1] * coeff[i] >= 0)
                 {
                     shift = shift_temp;
@@ -236,7 +215,6 @@ double POLY_APPR::Out(double param1)
         {
             output += prod;
             // printf("i=%d: sum(%lf), prod(%lf), shift(%lf).\n", i, output, prod, shift);
-            // printf("%.10lf\n", output);
             if (i == 1 && order[0] == 0)
             {
                 prod = input * coeff[1];
@@ -244,11 +222,10 @@ double POLY_APPR::Out(double param1)
             else if (order[i-1] == order[i])
             {
                 prod = shift;
-                // printf("%dth and %dth are the same order, product == shift.\n", i-1, i);
             }
             else
             {
-                prod = mul_fixed.Out(input,shift,fracWidth);
+                prod = input*shift;
             }
 
             if (i < term_cnt-1)

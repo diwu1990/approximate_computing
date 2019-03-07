@@ -43,6 +43,15 @@ conclusion:
 1. for a certain distribution, the data bit width will influence the best approximate poly, (maybe due to truncation error, conjecture).
 2. always find approximate poly with good enough accuracy
 
+
+
+do the truncation from 16 bit
+figure: fixing a certain distribution (uniform), change bit width from 16 to 8 to check the performance change.
+(Y-accuracy, X-latency, three curves for all bit width)
+conclusion:
+1. for a certain distribution, the data bit width will influence the best approximate poly, (maybe due to truncation error, conjecture).
+2. always find approximate poly with good enough accuracy
+
 figure: fixing a 16 bit poly, and test accuracy from 16 to 8, seeming like truncation
 conclusion: leading to sub-optimal result
 

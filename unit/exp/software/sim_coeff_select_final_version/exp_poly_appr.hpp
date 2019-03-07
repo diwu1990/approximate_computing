@@ -9,6 +9,8 @@
 #include <iostream>
 #include <random>
 #include "poly_appr.hpp"
+#include "truncation.hpp"
+#include "mul_fixed.hpp"
 using namespace std;
 
 class EXP_POLY_APPR
@@ -29,13 +31,12 @@ class EXP_POLY_APPR
     double wce; // Worst Case Error
     double wcre; // Worst Case Relative Error
 
-    double temp;
-    double intPart;
-    double fracPart;
     double exp1;
 
     POLY_APPR poly_appr;
-
+    TRUNCATION truncation;
+    MUL_FIXED mul_fixed;
+    
     int totalCnt;
     int N;
     vector<int> weight;
