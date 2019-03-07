@@ -184,7 +184,7 @@ void EXP_POLY_APPR::Eval()
         if (in < threshold)
         {
             // {2,fracWidth-2} appr multiply by e^0 with format {2,fracWidth-2}
-            appr = mul_fixed.Out(truncation.Out(appr), 1, fracWidth-2);
+            appr = truncation.Out(appr);
         }
         else
         {
@@ -192,7 +192,6 @@ void EXP_POLY_APPR::Eval()
             appr = mul_fixed.Out(truncation.Out(appr), exp1, fracWidth-2);
         }
 
-        // printf("%.10lf\n", appr);
         absError = abs(appr - orig);
         mae += absError * weight[i];
         mse += pow(absError,2.0) * weight[i];
