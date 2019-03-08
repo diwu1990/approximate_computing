@@ -31,24 +31,24 @@ void EXP_POLY_APPR::Init(vector<double> param1, vector<double> param2, uint64_t 
         weight[i] = 0;
     }
     
-    // // Gaussian distribution
-    // double number;
-    // default_random_engine generator;
-    // normal_distribution<double> distribution(0.25,0.1);
-    // for (int i = 0; i < (totalCnt)*N; ++i)
-    // {
-    //     number = distribution(generator);
-    //     if ((number>=0.0) && (number<1.0))
-    //     {
-    //         ++weight[int(number*totalCnt)];
-    //     }
-    // }
-
-    // uniform distribution
-    for (int i = 0; i < (totalCnt); ++i)
+    // Gaussian distribution
+    double number;
+    default_random_engine generator;
+    normal_distribution<double> distribution(0.25,0.1);
+    for (int i = 0; i < (totalCnt)*N; ++i)
     {
-        weight[i] = N;
+        number = distribution(generator);
+        if ((number>=0.0) && (number<1.0))
+        {
+            ++weight[int(number*totalCnt)];
+        }
     }
+
+    // // uniform distribution
+    // for (int i = 0; i < (totalCnt); ++i)
+    // {
+    //     weight[i] = N;
+    // }
 
     // step distribution
     // for (int i = 0; i < (totalCnt); ++i)
@@ -141,7 +141,7 @@ double EXP_POLY_APPR::Out(double param1)
     if (input < threshold)
     {
         // {2,fracWidth-2} output multiply by e^0 with format {2,fracWidth-2}
-        output = mul_fixed.Out(truncation.Out(output), 1, fracWidth-2);
+        output = truncation.Out(output);
     }
     else
     {
