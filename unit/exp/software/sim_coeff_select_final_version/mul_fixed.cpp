@@ -38,13 +38,13 @@ double MUL_FIXED::Out(double param1, double param2, uint64_t param3)
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // c = (double) mul8u_appr((uint64_t)abs(a_int), (uint64_t)abs(b_int)) * (double)sign / pow(2, fracWidth);
-    c = (double) mul8u_appr((uint64_t)abs(b_int), (uint64_t)abs(a_int)) * (double)sign / pow(2, fracWidth);
+    // c = (double) mul8u_appr((uint64_t)abs(b_int), (uint64_t)abs(a_int)) * (double)sign / pow(2, fracWidth);
 
     // c = (double) mul12u_appr((uint64_t)abs(a_int), (uint64_t)abs(b_int)) * (double)sign / pow(2, fracWidth);
     // c = (double) mul12u_appr((uint64_t)abs(b_int), (uint64_t)abs(a_int)) * (double)sign / pow(2, fracWidth);
 
     // c = (double) mul16u_appr((uint64_t)abs(a_int), (uint64_t)abs(b_int)) * (double)sign / pow(2, fracWidth);
-    // c = (double) mul16u_appr((uint64_t)abs(b_int), (uint64_t)abs(a_int)) * (double)sign / pow(2, fracWidth);
+    c = (double) mul16u_appr((uint64_t)abs(b_int), (uint64_t)abs(a_int)) * (double)sign / pow(2, fracWidth);
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
