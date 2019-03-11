@@ -32,23 +32,23 @@ void EXP_POLY_APPR::Init(vector<double> param1, vector<double> param2, uint64_t 
     }
     
     // Gaussian distribution
-    double number;
-    default_random_engine generator;
-    normal_distribution<double> distribution(0.25,0.1);
-    for (int i = 0; i < (totalCnt)*N; ++i)
-    {
-        number = distribution(generator);
-        if ((number>=0.0) && (number<1.0))
-        {
-            ++weight[int(number*totalCnt)];
-        }
-    }
-
-    // // uniform distribution
-    // for (int i = 0; i < (totalCnt); ++i)
+    // double number;
+    // default_random_engine generator;
+    // normal_distribution<double> distribution(0.75,0.1);
+    // for (int i = 0; i < (totalCnt)*N; ++i)
     // {
-    //     weight[i] = N;
+    //     number = distribution(generator);
+    //     if ((number>=0.0) && (number<1.0))
+    //     {
+    //         ++weight[int(number*totalCnt)];
+    //     }
     // }
+
+    // uniform distribution
+    for (int i = 0; i < (totalCnt); ++i)
+    {
+        weight[i] = N;
+    }
 
     // step distribution
     // for (int i = 0; i < (totalCnt); ++i)
