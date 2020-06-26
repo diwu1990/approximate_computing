@@ -1,0 +1,69 @@
+ 
+****************************************
+Report : timing
+        -path full
+        -delay max
+        -max_paths 1
+Design : computing_kernel_npp
+Version: N-2017.09-SP5
+Date   : Mon Dec 10 18:36:15 2018
+****************************************
+
+Operating Conditions: NCCOM   Library: tcbn40lpbwptc
+Wire Load Model Mode: segmented
+
+  Startpoint: iDataValid (input port clocked by clk)
+  Endpoint: prod_reg[5]
+            (rising edge-triggered flip-flop clocked by clk)
+  Path Group: clk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  computing_kernel_npp
+                     TSMC32K_Lowk_Conservative
+                                           tcbn40lpbwptc
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  clock clk (rise edge)                                   0.00       0.00
+  clock network delay (ideal)                             0.00       0.00
+  input external delay                                    0.25       0.25 f
+  iDataValid (in)                                         0.00       0.25 f
+  U296/ZN (CKND4BWP)                                      0.04       0.29 r
+  U464/ZN (ND2D1BWP)                                      0.06       0.36 f
+  U397/ZN (INVD1BWP)                                      0.04       0.40 r
+  U319/ZN (ND3D2BWP)                                      0.07       0.47 f
+  U382/ZN (OAI222D4BWP)                                   0.14       0.62 r
+  U264/ZN (CKND2BWP)                                      0.03       0.65 f
+  U400/ZN (NR3D0BWP)                                      0.08       0.73 r
+  U_multiplier_0/mult_10/S2_2_3/CO (FA1D0BWP)             0.15       0.87 r
+  U_multiplier_0/mult_10/S2_3_3/CO (FA1D0BWP)             0.13       1.00 r
+  U_multiplier_0/mult_10/S2_4_3/CO (FA1D0BWP)             0.13       1.13 r
+  U_multiplier_0/mult_10/S2_5_3/CO (FA1D0BWP)             0.13       1.26 r
+  U_multiplier_0/mult_10/S2_6_3/CO (FA1D0BWP)             0.13       1.39 r
+  U_multiplier_0/mult_10/S4_3/S (FA1D0BWP)                0.16       1.56 f
+  U242/ZN (XNR2D1BWP)                                     0.09       1.65 r
+  U356/ZN (INVD1BWP)                                      0.03       1.68 f
+  U353/ZN (ND2D1BWP)                                      0.03       1.71 r
+  U347/ZN (OAI21D1BWP)                                    0.05       1.75 f
+  U349/ZN (AOI21D1BWP)                                    0.06       1.82 r
+  U346/ZN (OAI21D1BWP)                                    0.05       1.87 f
+  U140/Z (XOR2D1BWP)                                      0.09       1.96 r
+  prod_reg[5]/D (DFCNQD1BWP)                              0.00       1.96 r
+  data arrival time                                                  1.96
+
+  clock clk (rise edge)                                   2.50       2.50
+  clock network delay (ideal)                             0.00       2.50
+  clock uncertainty                                      -0.15       2.35
+  prod_reg[5]/CP (DFCNQD1BWP)                             0.00       2.35 r
+  library setup time                                     -0.03       2.32
+  data required time                                                 2.32
+  --------------------------------------------------------------------------
+  data required time                                                 2.32
+  data arrival time                                                 -1.96
+  --------------------------------------------------------------------------
+  slack (MET)                                                        0.37
+
+
+1

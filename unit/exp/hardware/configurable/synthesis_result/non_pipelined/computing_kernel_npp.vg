@@ -1,0 +1,743 @@
+/////////////////////////////////////////////////////////////
+// Created by: Synopsys DC Expert(TM) in wire load mode
+// Version   : N-2017.09-SP5
+// Date      : Mon Dec 10 18:36:15 2018
+/////////////////////////////////////////////////////////////
+
+
+module computing_kernel_npp ( clk, rst_n, iData, iSign, iDataValid, oData, 
+        oDataValid );
+  input [7:0] iData;
+  output [9:0] oData;
+  input clk, rst_n, iSign, iDataValid;
+  output oDataValid;
+  wire   sign, N25, N36, N37, N38, N39, N40, N41, N42, N57, N58, N59, N60, N61,
+         N62, N63, N67, N68, N69, N70, N71, N72, N73, n45, n52, n53, n54, n55,
+         n56, n57, n58, n59, n60, n61, n62, n63, n270, n280, n276, n275, n274,
+         n273, n272, n277, n278, n271, n279, n101, \U_multiplier_0/mult_10/n7 ,
+         \U_multiplier_0/mult_10/n6 , \U_multiplier_0/mult_10/n5 ,
+         \U_multiplier_0/mult_10/n4 , \U_multiplier_0/mult_10/n3 ,
+         \U_multiplier_0/mult_10/A1[6] , \U_multiplier_0/mult_10/SUMB[1][1] ,
+         \U_multiplier_0/mult_10/SUMB[1][2] ,
+         \U_multiplier_0/mult_10/SUMB[1][3] ,
+         \U_multiplier_0/mult_10/SUMB[1][4] ,
+         \U_multiplier_0/mult_10/SUMB[1][5] ,
+         \U_multiplier_0/mult_10/SUMB[2][1] ,
+         \U_multiplier_0/mult_10/SUMB[2][2] ,
+         \U_multiplier_0/mult_10/SUMB[2][3] ,
+         \U_multiplier_0/mult_10/SUMB[2][4] ,
+         \U_multiplier_0/mult_10/SUMB[2][5] ,
+         \U_multiplier_0/mult_10/SUMB[3][1] ,
+         \U_multiplier_0/mult_10/SUMB[3][2] ,
+         \U_multiplier_0/mult_10/SUMB[3][3] ,
+         \U_multiplier_0/mult_10/SUMB[3][4] ,
+         \U_multiplier_0/mult_10/SUMB[3][5] ,
+         \U_multiplier_0/mult_10/SUMB[4][1] ,
+         \U_multiplier_0/mult_10/SUMB[4][2] ,
+         \U_multiplier_0/mult_10/SUMB[4][3] ,
+         \U_multiplier_0/mult_10/SUMB[4][4] ,
+         \U_multiplier_0/mult_10/SUMB[4][5] ,
+         \U_multiplier_0/mult_10/SUMB[5][1] ,
+         \U_multiplier_0/mult_10/SUMB[5][2] ,
+         \U_multiplier_0/mult_10/SUMB[5][3] ,
+         \U_multiplier_0/mult_10/SUMB[5][4] ,
+         \U_multiplier_0/mult_10/SUMB[5][5] ,
+         \U_multiplier_0/mult_10/SUMB[6][1] ,
+         \U_multiplier_0/mult_10/SUMB[6][2] ,
+         \U_multiplier_0/mult_10/SUMB[6][3] ,
+         \U_multiplier_0/mult_10/SUMB[6][4] ,
+         \U_multiplier_0/mult_10/SUMB[6][5] ,
+         \U_multiplier_0/mult_10/SUMB[7][1] ,
+         \U_multiplier_0/mult_10/SUMB[7][2] ,
+         \U_multiplier_0/mult_10/SUMB[7][3] ,
+         \U_multiplier_0/mult_10/SUMB[7][4] ,
+         \U_multiplier_0/mult_10/SUMB[7][5] ,
+         \U_multiplier_0/mult_10/CARRYB[1][0] ,
+         \U_multiplier_0/mult_10/CARRYB[2][0] ,
+         \U_multiplier_0/mult_10/CARRYB[2][1] ,
+         \U_multiplier_0/mult_10/CARRYB[2][2] ,
+         \U_multiplier_0/mult_10/CARRYB[2][3] ,
+         \U_multiplier_0/mult_10/CARRYB[2][4] ,
+         \U_multiplier_0/mult_10/CARRYB[2][5] ,
+         \U_multiplier_0/mult_10/CARRYB[3][0] ,
+         \U_multiplier_0/mult_10/CARRYB[3][1] ,
+         \U_multiplier_0/mult_10/CARRYB[3][2] ,
+         \U_multiplier_0/mult_10/CARRYB[3][3] ,
+         \U_multiplier_0/mult_10/CARRYB[3][4] ,
+         \U_multiplier_0/mult_10/CARRYB[3][5] ,
+         \U_multiplier_0/mult_10/CARRYB[4][0] ,
+         \U_multiplier_0/mult_10/CARRYB[4][1] ,
+         \U_multiplier_0/mult_10/CARRYB[4][2] ,
+         \U_multiplier_0/mult_10/CARRYB[4][3] ,
+         \U_multiplier_0/mult_10/CARRYB[4][4] ,
+         \U_multiplier_0/mult_10/CARRYB[4][5] ,
+         \U_multiplier_0/mult_10/CARRYB[5][0] ,
+         \U_multiplier_0/mult_10/CARRYB[5][1] ,
+         \U_multiplier_0/mult_10/CARRYB[5][2] ,
+         \U_multiplier_0/mult_10/CARRYB[5][3] ,
+         \U_multiplier_0/mult_10/CARRYB[5][4] ,
+         \U_multiplier_0/mult_10/CARRYB[5][5] ,
+         \U_multiplier_0/mult_10/CARRYB[6][0] ,
+         \U_multiplier_0/mult_10/CARRYB[6][1] ,
+         \U_multiplier_0/mult_10/CARRYB[6][2] ,
+         \U_multiplier_0/mult_10/CARRYB[6][3] ,
+         \U_multiplier_0/mult_10/CARRYB[6][4] ,
+         \U_multiplier_0/mult_10/CARRYB[6][5] ,
+         \U_multiplier_0/mult_10/CARRYB[7][0] ,
+         \U_multiplier_0/mult_10/CARRYB[7][1] ,
+         \U_multiplier_0/mult_10/CARRYB[7][2] ,
+         \U_multiplier_0/mult_10/CARRYB[7][3] ,
+         \U_multiplier_0/mult_10/CARRYB[7][4] ,
+         \U_multiplier_0/mult_10/CARRYB[7][5] ,
+         \U_multiplier_0/mult_10/ab[1][6] , \U_multiplier_0/mult_10/ab[2][0] ,
+         \U_multiplier_0/mult_10/ab[2][1] , \U_multiplier_0/mult_10/ab[2][2] ,
+         \U_multiplier_0/mult_10/ab[2][3] , \U_multiplier_0/mult_10/ab[2][4] ,
+         \U_multiplier_0/mult_10/ab[2][5] , \U_multiplier_0/mult_10/ab[2][6] ,
+         \U_multiplier_0/mult_10/ab[3][0] , \U_multiplier_0/mult_10/ab[3][1] ,
+         \U_multiplier_0/mult_10/ab[3][2] , \U_multiplier_0/mult_10/ab[3][3] ,
+         \U_multiplier_0/mult_10/ab[3][4] , \U_multiplier_0/mult_10/ab[3][5] ,
+         \U_multiplier_0/mult_10/ab[3][6] , \U_multiplier_0/mult_10/ab[4][0] ,
+         \U_multiplier_0/mult_10/ab[4][1] , \U_multiplier_0/mult_10/ab[4][2] ,
+         \U_multiplier_0/mult_10/ab[4][3] , \U_multiplier_0/mult_10/ab[4][4] ,
+         \U_multiplier_0/mult_10/ab[4][5] , \U_multiplier_0/mult_10/ab[4][6] ,
+         \U_multiplier_0/mult_10/ab[5][0] , \U_multiplier_0/mult_10/ab[5][1] ,
+         \U_multiplier_0/mult_10/ab[5][2] , \U_multiplier_0/mult_10/ab[5][3] ,
+         \U_multiplier_0/mult_10/ab[5][4] , \U_multiplier_0/mult_10/ab[5][5] ,
+         \U_multiplier_0/mult_10/ab[5][6] , \U_multiplier_0/mult_10/ab[6][0] ,
+         \U_multiplier_0/mult_10/ab[6][1] , \U_multiplier_0/mult_10/ab[6][2] ,
+         \U_multiplier_0/mult_10/ab[6][3] , \U_multiplier_0/mult_10/ab[6][4] ,
+         \U_multiplier_0/mult_10/ab[6][5] , \U_multiplier_0/mult_10/ab[6][6] ,
+         \U_multiplier_0/mult_10/ab[7][0] , \U_multiplier_0/mult_10/ab[7][1] ,
+         \U_multiplier_0/mult_10/ab[7][2] , \U_multiplier_0/mult_10/ab[7][3] ,
+         \U_multiplier_0/mult_10/ab[7][4] , \U_multiplier_0/mult_10/ab[7][5] ,
+         \U_multiplier_0/mult_10/FS_1/n17 , \add_46_2/n1 , \sub_46_2/n1 , n116,
+         n117, n118, n119, n120, n121, n122, n123, n124, n125, n126, n127,
+         n128, n129, n130, n131, n132, n133, n134, n135, n136, n137, n138,
+         n139, n140, n141, n142, n143, n144, n145, n146, n147, n148, n149,
+         n150, n151, n152, n153, n154, n155, n156, n157, n158, n159, n160,
+         n161, n162, n163, n164, n165, n166, n167, n168, n169, n170, n171,
+         n172, n173, n174, n175, n176, n177, n178, n179, n180, n181, n182,
+         n183, n184, n185, n186, n187, n188, n189, n190, n191, n192, n193,
+         n194, n195, n196, n197, n198, n199, n200, n201, n202, n203, n204,
+         n205, n206, n207, n208, n209, n210, n211, n212, n213, n214, n215,
+         n216, n217, n218, n219, n220, n221, n222, n223, n224, n225, n226,
+         n227, n228, n229, n230, n231, n232, n233, n234, n235, n236, n237,
+         n238, n239, n240, n241, n242, n243, n244, n245, n246, n247, n248,
+         n249, n250, n251, n252, n253, n254, n255, n256, n257, n259;
+  wire   [2:0] cnt;
+  wire   [7:0] data;
+  wire   [7:0] prod;
+  wire   [15:0] mulOut;
+  wire   [9:1] \add_46_2/carry ;
+  wire   [10:0] \sub_46_2/carry ;
+  assign N25 = iData[0];
+  assign N36 = iData[1];
+  assign N37 = iData[2];
+  assign N38 = iData[3];
+  assign N39 = iData[4];
+  assign N40 = iData[5];
+  assign N41 = iData[6];
+  assign N42 = iData[7];
+
+  DFCNQD1BWP \prod_reg[1]  ( .D(mulOut[9]), .CP(clk), .CDN(rst_n), .Q(prod[1])
+         );
+  DFCNQD1BWP \prod_reg[2]  ( .D(mulOut[10]), .CP(clk), .CDN(rst_n), .Q(prod[2]) );
+  DFCNQD1BWP \prod_reg[3]  ( .D(mulOut[11]), .CP(clk), .CDN(rst_n), .Q(prod[3]) );
+  DFCNQD1BWP \prod_reg[4]  ( .D(mulOut[12]), .CP(clk), .CDN(rst_n), .Q(prod[4]) );
+  DFCNQD1BWP \prod_reg[5]  ( .D(mulOut[13]), .CP(clk), .CDN(rst_n), .Q(prod[5]) );
+  DFCNQD1BWP \prod_reg[6]  ( .D(mulOut[14]), .CP(clk), .CDN(rst_n), .Q(prod[6]) );
+  DFCNQD1BWP \prod_reg[7]  ( .D(\U_multiplier_0/mult_10/FS_1/n17 ), .CP(clk), 
+        .CDN(rst_n), .Q(prod[7]) );
+  DFCNQD1BWP \prod_reg[0]  ( .D(\U_multiplier_0/mult_10/A1[6] ), .CP(clk), 
+        .CDN(rst_n), .Q(prod[0]) );
+  DFCNQD1BWP \sum_reg[7]  ( .D(n54), .CP(clk), .CDN(rst_n), .Q(n272) );
+  DFCNQD1BWP \sum_reg[1]  ( .D(n60), .CP(clk), .CDN(rst_n), .Q(n278) );
+  DFCNQD1BWP \sum_reg[2]  ( .D(n59), .CP(clk), .CDN(rst_n), .Q(n277) );
+  DFCNQD1BWP \sum_reg[3]  ( .D(n58), .CP(clk), .CDN(rst_n), .Q(n276) );
+  DFCNQD1BWP \sum_reg[4]  ( .D(n57), .CP(clk), .CDN(rst_n), .Q(n275) );
+  DFCNQD1BWP \sum_reg[5]  ( .D(n56), .CP(clk), .CDN(rst_n), .Q(n274) );
+  DFCNQD1BWP \sum_reg[6]  ( .D(n55), .CP(clk), .CDN(rst_n), .Q(n273) );
+  DFCNQD1BWP \sum_reg[8]  ( .D(n53), .CP(clk), .CDN(rst_n), .Q(n271) );
+  DFCNQD1BWP \sum_reg[0]  ( .D(n61), .CP(clk), .CDN(rst_n), .Q(n279) );
+  DFCNQD1BWP \sum_reg[9]  ( .D(n52), .CP(clk), .CDN(rst_n), .Q(n270) );
+  AO211D1BWP U86 ( .A1(N57), .A2(n140), .B(n163), .C(n164), .Z(n60) );
+  AO211D1BWP U90 ( .A1(N58), .A2(n140), .B(n167), .C(n168), .Z(n59) );
+  AO211D1BWP U94 ( .A1(N59), .A2(n140), .B(n171), .C(n172), .Z(n58) );
+  AO211D1BWP U98 ( .A1(N60), .A2(n140), .B(n175), .C(n176), .Z(n57) );
+  AO211D1BWP U102 ( .A1(N61), .A2(n140), .B(n179), .C(n180), .Z(n56) );
+  AO211D1BWP U106 ( .A1(N62), .A2(n140), .B(n183), .C(n184), .Z(n55) );
+  AO211D1BWP U110 ( .A1(N63), .A2(n140), .B(n187), .C(n188), .Z(n54) );
+  INR2XD1BWP U117 ( .A1(n185), .B1(N41), .ZN(n189) );
+  INR2XD1BWP U118 ( .A1(n181), .B1(N40), .ZN(n185) );
+  INR2XD1BWP U119 ( .A1(n177), .B1(N39), .ZN(n181) );
+  INR2XD1BWP U120 ( .A1(n173), .B1(N38), .ZN(n177) );
+  INR2XD1BWP U121 ( .A1(n169), .B1(N37), .ZN(n173) );
+  ND2D2BWP U123 ( .A1(iSign), .A2(iDataValid), .ZN(n165) );
+  AO221D1BWP U129 ( .A1(n140), .A2(\sub_46_2/carry [8]), .B1(n143), .B2(n162), 
+        .C(n161), .Z(n194) );
+  INR3D1BWP U133 ( .A1(sign), .B1(n154), .B2(n199), .ZN(n198) );
+  XOR2D1BWP U138 ( .A1(n201), .A2(n202), .Z(mulOut[9]) );
+  XOR2D1BWP U140 ( .A1(n205), .A2(n206), .Z(mulOut[13]) );
+  XOR2D1BWP U143 ( .A1(n210), .A2(n211), .Z(mulOut[12]) );
+  XOR2D1BWP U145 ( .A1(n214), .A2(n215), .Z(mulOut[11]) );
+  XOR2D1BWP U147 ( .A1(n219), .A2(n220), .Z(mulOut[10]) );
+  XOR2D1BWP U202 ( .A1(n243), .A2(n227), .Z(
+        \U_multiplier_0/mult_10/SUMB[1][5] ) );
+  XOR2D1BWP U205 ( .A1(n245), .A2(n223), .Z(
+        \U_multiplier_0/mult_10/SUMB[1][4] ) );
+  XOR2D1BWP U209 ( .A1(n248), .A2(n225), .Z(
+        \U_multiplier_0/mult_10/SUMB[1][3] ) );
+  XOR2D1BWP U213 ( .A1(n249), .A2(n226), .Z(
+        \U_multiplier_0/mult_10/SUMB[1][2] ) );
+  XOR2D1BWP U217 ( .A1(n250), .A2(n228), .Z(
+        \U_multiplier_0/mult_10/SUMB[1][1] ) );
+  XNR2D1BWP U224 ( .A1(n251), .A2(\U_multiplier_0/mult_10/CARRYB[7][5] ), .ZN(
+        n207) );
+  OAI22D2BWP U227 ( .A1(n141), .A2(n121), .B1(n149), .B2(n246), .ZN(n244) );
+  XNR2D1BWP U231 ( .A1(\U_multiplier_0/mult_10/SUMB[7][5] ), .A2(
+        \U_multiplier_0/mult_10/CARRYB[7][4] ), .ZN(n252) );
+  XNR2D1BWP U235 ( .A1(\U_multiplier_0/mult_10/SUMB[7][4] ), .A2(
+        \U_multiplier_0/mult_10/CARRYB[7][3] ), .ZN(n216) );
+  XOR2D1BWP U240 ( .A1(\U_multiplier_0/mult_10/SUMB[7][2] ), .A2(
+        \U_multiplier_0/mult_10/CARRYB[7][1] ), .Z(n202) );
+  XNR2D1BWP U242 ( .A1(\U_multiplier_0/mult_10/SUMB[7][3] ), .A2(
+        \U_multiplier_0/mult_10/CARRYB[7][2] ), .ZN(n253) );
+  OAI21D4BWP U253 ( .A1(cnt[1]), .A2(n254), .B(n141), .ZN(n246) );
+  XOR2D1BWP U255 ( .A1(\U_multiplier_0/mult_10/SUMB[7][1] ), .A2(
+        \U_multiplier_0/mult_10/CARRYB[7][0] ), .Z(
+        \U_multiplier_0/mult_10/A1[6] ) );
+  CKND2BWP U260 ( .I(n244), .ZN(n120) );
+  CKND2BWP U262 ( .I(n237), .ZN(n122) );
+  CKND2BWP U264 ( .I(n238), .ZN(n124) );
+  CKND2BWP U266 ( .I(n239), .ZN(n126) );
+  CKND2BWP U268 ( .I(n240), .ZN(n128) );
+  CKND2BWP U290 ( .I(n271), .ZN(n150) );
+  CKND2BWP U291 ( .I(n279), .ZN(n151) );
+  CKND2BWP U292 ( .I(n270), .ZN(n152) );
+  EDFCNQD1BWP sign_reg ( .D(iSign), .E(iDataValid), .CP(clk), .CDN(rst_n), .Q(
+        sign) );
+  EDFCNQD1BWP \data_reg[7]  ( .D(N42), .E(iDataValid), .CP(clk), .CDN(rst_n), 
+        .Q(data[7]) );
+  EDFCNQD1BWP \data_reg[6]  ( .D(N41), .E(iDataValid), .CP(clk), .CDN(rst_n), 
+        .Q(data[6]) );
+  EDFCNQD1BWP \data_reg[5]  ( .D(N40), .E(iDataValid), .CP(clk), .CDN(rst_n), 
+        .Q(data[5]) );
+  EDFCNQD1BWP \data_reg[4]  ( .D(N39), .E(iDataValid), .CP(clk), .CDN(rst_n), 
+        .Q(data[4]) );
+  EDFCNQD1BWP \data_reg[3]  ( .D(N38), .E(iDataValid), .CP(clk), .CDN(rst_n), 
+        .Q(data[3]) );
+  EDFCNQD1BWP \data_reg[2]  ( .D(N37), .E(iDataValid), .CP(clk), .CDN(rst_n), 
+        .Q(data[2]) );
+  EDFCNQD1BWP \data_reg[1]  ( .D(N36), .E(iDataValid), .CP(clk), .CDN(rst_n), 
+        .Q(data[1]) );
+  EDFCNQD1BWP \data_reg[0]  ( .D(N25), .E(iDataValid), .CP(clk), .CDN(rst_n), 
+        .Q(data[0]) );
+  FA1D0BWP \sub_46_2/U2_6  ( .A(oData[6]), .B(n148), .CI(\sub_46_2/carry [6]), 
+        .CO(\sub_46_2/carry [7]), .S(N62) );
+  FA1D0BWP \sub_46_2/U2_5  ( .A(oData[5]), .B(n147), .CI(\sub_46_2/carry [5]), 
+        .CO(\sub_46_2/carry [6]), .S(N61) );
+  FA1D0BWP \sub_46_2/U2_4  ( .A(oData[4]), .B(n146), .CI(\sub_46_2/carry [4]), 
+        .CO(\sub_46_2/carry [5]), .S(N60) );
+  FA1D0BWP \sub_46_2/U2_3  ( .A(oData[3]), .B(n145), .CI(\sub_46_2/carry [3]), 
+        .CO(\sub_46_2/carry [4]), .S(N59) );
+  FA1D0BWP \sub_46_2/U2_2  ( .A(oData[2]), .B(n144), .CI(\sub_46_2/carry [2]), 
+        .CO(\sub_46_2/carry [3]), .S(N58) );
+  FA1D0BWP \sub_46_2/U2_1  ( .A(oData[1]), .B(n142), .CI(\sub_46_2/n1 ), .CO(
+        \sub_46_2/carry [2]), .S(N57) );
+  FA1D0BWP \add_46_2/U1_1  ( .A(oData[1]), .B(prod[1]), .CI(\add_46_2/n1 ), 
+        .CO(\add_46_2/carry [2]), .S(N67) );
+  FA1D0BWP \add_46_2/U1_2  ( .A(oData[2]), .B(prod[2]), .CI(
+        \add_46_2/carry [2]), .CO(\add_46_2/carry [3]), .S(N68) );
+  FA1D0BWP \add_46_2/U1_3  ( .A(oData[3]), .B(prod[3]), .CI(
+        \add_46_2/carry [3]), .CO(\add_46_2/carry [4]), .S(N69) );
+  FA1D0BWP \add_46_2/U1_4  ( .A(oData[4]), .B(prod[4]), .CI(
+        \add_46_2/carry [4]), .CO(\add_46_2/carry [5]), .S(N70) );
+  FA1D0BWP \add_46_2/U1_5  ( .A(oData[5]), .B(prod[5]), .CI(
+        \add_46_2/carry [5]), .CO(\add_46_2/carry [6]), .S(N71) );
+  FA1D0BWP \add_46_2/U1_6  ( .A(oData[6]), .B(prod[6]), .CI(
+        \add_46_2/carry [6]), .CO(\add_46_2/carry [7]), .S(N72) );
+  FA1D0BWP \sub_46_2/U2_7  ( .A(oData[7]), .B(n149), .CI(\sub_46_2/carry [7]), 
+        .CO(\sub_46_2/carry [8]), .S(N63) );
+  FA1D0BWP \U_multiplier_0/mult_10/S2_6_5  ( .A(
+        \U_multiplier_0/mult_10/ab[6][5] ), .B(
+        \U_multiplier_0/mult_10/CARRYB[5][5] ), .CI(
+        \U_multiplier_0/mult_10/ab[5][6] ), .CO(
+        \U_multiplier_0/mult_10/CARRYB[6][5] ), .S(
+        \U_multiplier_0/mult_10/SUMB[6][5] ) );
+  FA1D0BWP \U_multiplier_0/mult_10/S2_6_4  ( .A(
+        \U_multiplier_0/mult_10/ab[6][4] ), .B(
+        \U_multiplier_0/mult_10/CARRYB[5][4] ), .CI(
+        \U_multiplier_0/mult_10/SUMB[5][5] ), .CO(
+        \U_multiplier_0/mult_10/CARRYB[6][4] ), .S(
+        \U_multiplier_0/mult_10/SUMB[6][4] ) );
+  FA1D0BWP \U_multiplier_0/mult_10/S2_5_5  ( .A(
+        \U_multiplier_0/mult_10/ab[5][5] ), .B(
+        \U_multiplier_0/mult_10/CARRYB[4][5] ), .CI(
+        \U_multiplier_0/mult_10/ab[4][6] ), .CO(
+        \U_multiplier_0/mult_10/CARRYB[5][5] ), .S(
+        \U_multiplier_0/mult_10/SUMB[5][5] ) );
+  FA1D0BWP \U_multiplier_0/mult_10/S2_6_1  ( .A(
+        \U_multiplier_0/mult_10/ab[6][1] ), .B(
+        \U_multiplier_0/mult_10/CARRYB[5][1] ), .CI(
+        \U_multiplier_0/mult_10/SUMB[5][2] ), .CO(
+        \U_multiplier_0/mult_10/CARRYB[6][1] ), .S(
+        \U_multiplier_0/mult_10/SUMB[6][1] ) );
+  FA1D0BWP \U_multiplier_0/mult_10/S2_5_1  ( .A(
+        \U_multiplier_0/mult_10/ab[5][1] ), .B(
+        \U_multiplier_0/mult_10/CARRYB[4][1] ), .CI(
+        \U_multiplier_0/mult_10/SUMB[4][2] ), .CO(
+        \U_multiplier_0/mult_10/CARRYB[5][1] ), .S(
+        \U_multiplier_0/mult_10/SUMB[5][1] ) );
+  FA1D0BWP \U_multiplier_0/mult_10/S1_4_0  ( .A(
+        \U_multiplier_0/mult_10/ab[4][0] ), .B(
+        \U_multiplier_0/mult_10/CARRYB[3][0] ), .CI(
+        \U_multiplier_0/mult_10/SUMB[3][1] ), .CO(
+        \U_multiplier_0/mult_10/CARRYB[4][0] ) );
+  FA1D0BWP \U_multiplier_0/mult_10/S1_5_0  ( .A(
+        \U_multiplier_0/mult_10/ab[5][0] ), .B(
+        \U_multiplier_0/mult_10/CARRYB[4][0] ), .CI(
+        \U_multiplier_0/mult_10/SUMB[4][1] ), .CO(
+        \U_multiplier_0/mult_10/CARRYB[5][0] ) );
+  FA1D0BWP \U_multiplier_0/mult_10/S2_6_3  ( .A(
+        \U_multiplier_0/mult_10/ab[6][3] ), .B(
+        \U_multiplier_0/mult_10/CARRYB[5][3] ), .CI(
+        \U_multiplier_0/mult_10/SUMB[5][4] ), .CO(
+        \U_multiplier_0/mult_10/CARRYB[6][3] ), .S(
+        \U_multiplier_0/mult_10/SUMB[6][3] ) );
+  FA1D0BWP \U_multiplier_0/mult_10/S2_6_2  ( .A(
+        \U_multiplier_0/mult_10/ab[6][2] ), .B(
+        \U_multiplier_0/mult_10/CARRYB[5][2] ), .CI(
+        \U_multiplier_0/mult_10/SUMB[5][3] ), .CO(
+        \U_multiplier_0/mult_10/CARRYB[6][2] ), .S(
+        \U_multiplier_0/mult_10/SUMB[6][2] ) );
+  FA1D0BWP \U_multiplier_0/mult_10/S2_4_1  ( .A(
+        \U_multiplier_0/mult_10/ab[4][1] ), .B(
+        \U_multiplier_0/mult_10/CARRYB[3][1] ), .CI(
+        \U_multiplier_0/mult_10/SUMB[3][2] ), .CO(
+        \U_multiplier_0/mult_10/CARRYB[4][1] ), .S(
+        \U_multiplier_0/mult_10/SUMB[4][1] ) );
+  FA1D0BWP \U_multiplier_0/mult_10/S2_5_4  ( .A(
+        \U_multiplier_0/mult_10/ab[5][4] ), .B(
+        \U_multiplier_0/mult_10/CARRYB[4][4] ), .CI(
+        \U_multiplier_0/mult_10/SUMB[4][5] ), .CO(
+        \U_multiplier_0/mult_10/CARRYB[5][4] ), .S(
+        \U_multiplier_0/mult_10/SUMB[5][4] ) );
+  FA1D0BWP \U_multiplier_0/mult_10/S2_5_3  ( .A(
+        \U_multiplier_0/mult_10/ab[5][3] ), .B(
+        \U_multiplier_0/mult_10/CARRYB[4][3] ), .CI(
+        \U_multiplier_0/mult_10/SUMB[4][4] ), .CO(
+        \U_multiplier_0/mult_10/CARRYB[5][3] ), .S(
+        \U_multiplier_0/mult_10/SUMB[5][3] ) );
+  FA1D0BWP \U_multiplier_0/mult_10/S2_5_2  ( .A(
+        \U_multiplier_0/mult_10/ab[5][2] ), .B(
+        \U_multiplier_0/mult_10/CARRYB[4][2] ), .CI(
+        \U_multiplier_0/mult_10/SUMB[4][3] ), .CO(
+        \U_multiplier_0/mult_10/CARRYB[5][2] ), .S(
+        \U_multiplier_0/mult_10/SUMB[5][2] ) );
+  FA1D0BWP \U_multiplier_0/mult_10/S2_3_1  ( .A(
+        \U_multiplier_0/mult_10/ab[3][1] ), .B(
+        \U_multiplier_0/mult_10/CARRYB[2][1] ), .CI(
+        \U_multiplier_0/mult_10/SUMB[2][2] ), .CO(
+        \U_multiplier_0/mult_10/CARRYB[3][1] ), .S(
+        \U_multiplier_0/mult_10/SUMB[3][1] ) );
+  FA1D0BWP \U_multiplier_0/mult_10/S1_2_0  ( .A(
+        \U_multiplier_0/mult_10/ab[2][0] ), .B(
+        \U_multiplier_0/mult_10/CARRYB[1][0] ), .CI(
+        \U_multiplier_0/mult_10/SUMB[1][1] ), .CO(
+        \U_multiplier_0/mult_10/CARRYB[2][0] ) );
+  FA1D0BWP \U_multiplier_0/mult_10/S1_3_0  ( .A(
+        \U_multiplier_0/mult_10/ab[3][0] ), .B(
+        \U_multiplier_0/mult_10/CARRYB[2][0] ), .CI(
+        \U_multiplier_0/mult_10/SUMB[2][1] ), .CO(
+        \U_multiplier_0/mult_10/CARRYB[3][0] ) );
+  FA1D0BWP \U_multiplier_0/mult_10/S2_4_5  ( .A(
+        \U_multiplier_0/mult_10/ab[4][5] ), .B(
+        \U_multiplier_0/mult_10/CARRYB[3][5] ), .CI(
+        \U_multiplier_0/mult_10/ab[3][6] ), .CO(
+        \U_multiplier_0/mult_10/CARRYB[4][5] ), .S(
+        \U_multiplier_0/mult_10/SUMB[4][5] ) );
+  FA1D0BWP \U_multiplier_0/mult_10/S2_4_4  ( .A(
+        \U_multiplier_0/mult_10/ab[4][4] ), .B(
+        \U_multiplier_0/mult_10/CARRYB[3][4] ), .CI(
+        \U_multiplier_0/mult_10/SUMB[3][5] ), .CO(
+        \U_multiplier_0/mult_10/CARRYB[4][4] ), .S(
+        \U_multiplier_0/mult_10/SUMB[4][4] ) );
+  FA1D0BWP \U_multiplier_0/mult_10/S2_4_3  ( .A(
+        \U_multiplier_0/mult_10/ab[4][3] ), .B(
+        \U_multiplier_0/mult_10/CARRYB[3][3] ), .CI(
+        \U_multiplier_0/mult_10/SUMB[3][4] ), .CO(
+        \U_multiplier_0/mult_10/CARRYB[4][3] ), .S(
+        \U_multiplier_0/mult_10/SUMB[4][3] ) );
+  FA1D0BWP \U_multiplier_0/mult_10/S2_4_2  ( .A(
+        \U_multiplier_0/mult_10/ab[4][2] ), .B(
+        \U_multiplier_0/mult_10/CARRYB[3][2] ), .CI(
+        \U_multiplier_0/mult_10/SUMB[3][3] ), .CO(
+        \U_multiplier_0/mult_10/CARRYB[4][2] ), .S(
+        \U_multiplier_0/mult_10/SUMB[4][2] ) );
+  FA1D0BWP \U_multiplier_0/mult_10/S2_3_5  ( .A(
+        \U_multiplier_0/mult_10/ab[3][5] ), .B(
+        \U_multiplier_0/mult_10/CARRYB[2][5] ), .CI(
+        \U_multiplier_0/mult_10/ab[2][6] ), .CO(
+        \U_multiplier_0/mult_10/CARRYB[3][5] ), .S(
+        \U_multiplier_0/mult_10/SUMB[3][5] ) );
+  FA1D0BWP \U_multiplier_0/mult_10/S2_3_4  ( .A(
+        \U_multiplier_0/mult_10/ab[3][4] ), .B(
+        \U_multiplier_0/mult_10/CARRYB[2][4] ), .CI(
+        \U_multiplier_0/mult_10/SUMB[2][5] ), .CO(
+        \U_multiplier_0/mult_10/CARRYB[3][4] ), .S(
+        \U_multiplier_0/mult_10/SUMB[3][4] ) );
+  FA1D0BWP \U_multiplier_0/mult_10/S2_3_3  ( .A(
+        \U_multiplier_0/mult_10/ab[3][3] ), .B(
+        \U_multiplier_0/mult_10/CARRYB[2][3] ), .CI(
+        \U_multiplier_0/mult_10/SUMB[2][4] ), .CO(
+        \U_multiplier_0/mult_10/CARRYB[3][3] ), .S(
+        \U_multiplier_0/mult_10/SUMB[3][3] ) );
+  FA1D0BWP \U_multiplier_0/mult_10/S2_3_2  ( .A(
+        \U_multiplier_0/mult_10/ab[3][2] ), .B(
+        \U_multiplier_0/mult_10/CARRYB[2][2] ), .CI(
+        \U_multiplier_0/mult_10/SUMB[2][3] ), .CO(
+        \U_multiplier_0/mult_10/CARRYB[3][2] ), .S(
+        \U_multiplier_0/mult_10/SUMB[3][2] ) );
+  FA1D0BWP \U_multiplier_0/mult_10/S2_2_1  ( .A(
+        \U_multiplier_0/mult_10/ab[2][1] ), .B(\U_multiplier_0/mult_10/n3 ), 
+        .CI(\U_multiplier_0/mult_10/SUMB[1][2] ), .CO(
+        \U_multiplier_0/mult_10/CARRYB[2][1] ), .S(
+        \U_multiplier_0/mult_10/SUMB[2][1] ) );
+  FA1D0BWP \U_multiplier_0/mult_10/S2_2_5  ( .A(
+        \U_multiplier_0/mult_10/ab[2][5] ), .B(\U_multiplier_0/mult_10/n4 ), 
+        .CI(\U_multiplier_0/mult_10/ab[1][6] ), .CO(
+        \U_multiplier_0/mult_10/CARRYB[2][5] ), .S(
+        \U_multiplier_0/mult_10/SUMB[2][5] ) );
+  FA1D0BWP \U_multiplier_0/mult_10/S2_2_4  ( .A(
+        \U_multiplier_0/mult_10/ab[2][4] ), .B(\U_multiplier_0/mult_10/n7 ), 
+        .CI(\U_multiplier_0/mult_10/SUMB[1][5] ), .CO(
+        \U_multiplier_0/mult_10/CARRYB[2][4] ), .S(
+        \U_multiplier_0/mult_10/SUMB[2][4] ) );
+  FA1D0BWP \U_multiplier_0/mult_10/S2_2_3  ( .A(
+        \U_multiplier_0/mult_10/ab[2][3] ), .B(\U_multiplier_0/mult_10/n6 ), 
+        .CI(\U_multiplier_0/mult_10/SUMB[1][4] ), .CO(
+        \U_multiplier_0/mult_10/CARRYB[2][3] ), .S(
+        \U_multiplier_0/mult_10/SUMB[2][3] ) );
+  FA1D0BWP \U_multiplier_0/mult_10/S2_2_2  ( .A(
+        \U_multiplier_0/mult_10/ab[2][2] ), .B(\U_multiplier_0/mult_10/n5 ), 
+        .CI(\U_multiplier_0/mult_10/SUMB[1][3] ), .CO(
+        \U_multiplier_0/mult_10/CARRYB[2][2] ), .S(
+        \U_multiplier_0/mult_10/SUMB[2][2] ) );
+  FA1D0BWP \U_multiplier_0/mult_10/S4_1  ( .A(
+        \U_multiplier_0/mult_10/ab[7][1] ), .B(
+        \U_multiplier_0/mult_10/CARRYB[6][1] ), .CI(
+        \U_multiplier_0/mult_10/SUMB[6][2] ), .CO(
+        \U_multiplier_0/mult_10/CARRYB[7][1] ), .S(
+        \U_multiplier_0/mult_10/SUMB[7][1] ) );
+  FA1D0BWP \U_multiplier_0/mult_10/S4_2  ( .A(
+        \U_multiplier_0/mult_10/ab[7][2] ), .B(
+        \U_multiplier_0/mult_10/CARRYB[6][2] ), .CI(
+        \U_multiplier_0/mult_10/SUMB[6][3] ), .CO(
+        \U_multiplier_0/mult_10/CARRYB[7][2] ), .S(
+        \U_multiplier_0/mult_10/SUMB[7][2] ) );
+  FA1D0BWP \U_multiplier_0/mult_10/S1_6_0  ( .A(
+        \U_multiplier_0/mult_10/ab[6][0] ), .B(
+        \U_multiplier_0/mult_10/CARRYB[5][0] ), .CI(
+        \U_multiplier_0/mult_10/SUMB[5][1] ), .CO(
+        \U_multiplier_0/mult_10/CARRYB[6][0] ) );
+  FA1D0BWP \U_multiplier_0/mult_10/S4_0  ( .A(
+        \U_multiplier_0/mult_10/ab[7][0] ), .B(
+        \U_multiplier_0/mult_10/CARRYB[6][0] ), .CI(
+        \U_multiplier_0/mult_10/SUMB[6][1] ), .CO(
+        \U_multiplier_0/mult_10/CARRYB[7][0] ) );
+  FA1D0BWP \U_multiplier_0/mult_10/S4_3  ( .A(
+        \U_multiplier_0/mult_10/ab[7][3] ), .B(
+        \U_multiplier_0/mult_10/CARRYB[6][3] ), .CI(
+        \U_multiplier_0/mult_10/SUMB[6][4] ), .CO(
+        \U_multiplier_0/mult_10/CARRYB[7][3] ), .S(
+        \U_multiplier_0/mult_10/SUMB[7][3] ) );
+  FA1D0BWP \add_46_2/U1_7  ( .A(oData[7]), .B(prod[7]), .CI(
+        \add_46_2/carry [7]), .CO(\add_46_2/carry [8]), .S(N73) );
+  DFCNQD1BWP \cnt_reg[2]  ( .D(n63), .CP(clk), .CDN(rst_n), .Q(n256) );
+  DFCND1BWP \cnt_reg[1]  ( .D(n62), .CP(clk), .CDN(rst_n), .Q(cnt[1]), .QN(
+        n154) );
+  EDFCNQD1BWP \cnt_reg[0]  ( .D(n255), .E(n45), .CP(clk), .CDN(rst_n), .Q(
+        cnt[0]) );
+  FA1D0BWP \U_multiplier_0/mult_10/S4_5  ( .A(
+        \U_multiplier_0/mult_10/ab[7][5] ), .B(
+        \U_multiplier_0/mult_10/CARRYB[6][5] ), .CI(
+        \U_multiplier_0/mult_10/ab[6][6] ), .CO(
+        \U_multiplier_0/mult_10/CARRYB[7][5] ), .S(
+        \U_multiplier_0/mult_10/SUMB[7][5] ) );
+  FA1D0BWP \U_multiplier_0/mult_10/S4_4  ( .A(
+        \U_multiplier_0/mult_10/ab[7][4] ), .B(
+        \U_multiplier_0/mult_10/CARRYB[6][4] ), .CI(
+        \U_multiplier_0/mult_10/SUMB[6][5] ), .CO(
+        \U_multiplier_0/mult_10/CARRYB[7][4] ), .S(
+        \U_multiplier_0/mult_10/SUMB[7][4] ) );
+  OAI22D0BWP U295 ( .A1(n195), .A2(n152), .B1(n270), .B2(n196), .ZN(n52) );
+  CKND4BWP U296 ( .I(iDataValid), .ZN(n141) );
+  INVD1BWP U297 ( .I(N42), .ZN(n121) );
+  INVD1BWP U298 ( .I(n224), .ZN(n135) );
+  INVD1BWP U299 ( .I(n242), .ZN(n133) );
+  INVD1BWP U300 ( .I(prod[7]), .ZN(n149) );
+  INVD1BWP U301 ( .I(cnt[0]), .ZN(n153) );
+  CKND2BWP U302 ( .I(n197), .ZN(n140) );
+  NR2D4BWP U303 ( .A1(n141), .A2(iSign), .ZN(n160) );
+  OAI21D1BWP U304 ( .A1(oDataValid), .A2(n200), .B(n141), .ZN(n45) );
+  AOI32D1BWP U305 ( .A1(n162), .A2(n150), .A3(\add_46_2/carry [8]), .B1(n271), 
+        .B2(n194), .ZN(n193) );
+  OAI21D0BWP U306 ( .A1(n101), .A2(n155), .B(n156), .ZN(n63) );
+  CKND2D0BWP U307 ( .A1(n101), .A2(n153), .ZN(n199) );
+  CKND2D1BWP U308 ( .A1(n101), .A2(cnt[0]), .ZN(n254) );
+  CKND1BWP U309 ( .I(n256), .ZN(n101) );
+  CKBD3BWP U310 ( .I(n232), .Z(n257) );
+  AOI22D1BWP U311 ( .A1(iDataValid), .A2(N36), .B1(data[1]), .B2(n257), .ZN(
+        n242) );
+  AOI22D4BWP U312 ( .A1(iDataValid), .A2(N37), .B1(data[2]), .B2(n257), .ZN(
+        n236) );
+  IAO21D1BWP U313 ( .A1(n154), .A2(n254), .B(iDataValid), .ZN(n232) );
+  AOI22D4BWP U314 ( .A1(iDataValid), .A2(N38), .B1(data[3]), .B2(n257), .ZN(
+        n235) );
+  AOI22D4BWP U315 ( .A1(iDataValid), .A2(N39), .B1(data[4]), .B2(n257), .ZN(
+        n234) );
+  AOI22D4BWP U316 ( .A1(iDataValid), .A2(N41), .B1(data[6]), .B2(n257), .ZN(
+        n231) );
+  CKND16BWP U317 ( .I(n152), .ZN(oData[9]) );
+  OAI222D4BWP U318 ( .A1(n144), .A2(n246), .B1(n145), .B2(n247), .C1(n141), 
+        .C2(n131), .ZN(n241) );
+  ND3D2BWP U319 ( .A1(n138), .A2(n154), .A3(n101), .ZN(n247) );
+  CKBD1BWP U320 ( .I(n198), .Z(n259) );
+  NR3D8BWP U321 ( .A1(n161), .A2(iDataValid), .A3(n259), .ZN(n162) );
+  AOI22D4BWP U322 ( .A1(iDataValid), .A2(N40), .B1(data[5]), .B2(n257), .ZN(
+        n233) );
+  AOI22D4BWP U323 ( .A1(iDataValid), .A2(N42), .B1(data[7]), .B2(n257), .ZN(
+        n229) );
+  CKND16BWP U324 ( .I(n151), .ZN(oData[0]) );
+  OR3D2BWP U325 ( .A1(cnt[1]), .A2(n101), .A3(n153), .Z(n280) );
+  INVD16BWP U326 ( .I(n280), .ZN(oDataValid) );
+  CKBD16BWP U327 ( .I(n277), .Z(oData[2]) );
+  AO22D0BWP U328 ( .A1(n161), .A2(oData[2]), .B1(N68), .B2(n162), .Z(n168) );
+  CKBD16BWP U329 ( .I(n276), .Z(oData[3]) );
+  AO22D0BWP U330 ( .A1(n161), .A2(oData[3]), .B1(N69), .B2(n162), .Z(n172) );
+  CKBD16BWP U331 ( .I(n275), .Z(oData[4]) );
+  AO22D0BWP U332 ( .A1(n161), .A2(oData[4]), .B1(N70), .B2(n162), .Z(n176) );
+  CKBD16BWP U333 ( .I(n274), .Z(oData[5]) );
+  AO22D0BWP U334 ( .A1(n161), .A2(oData[5]), .B1(N71), .B2(n162), .Z(n180) );
+  CKBD16BWP U335 ( .I(n273), .Z(oData[6]) );
+  AO22D0BWP U336 ( .A1(n161), .A2(oData[6]), .B1(N72), .B2(n162), .Z(n184) );
+  CKBD16BWP U337 ( .I(n278), .Z(oData[1]) );
+  AO22D0BWP U338 ( .A1(n161), .A2(oData[1]), .B1(N67), .B2(n162), .Z(n164) );
+  CKBD16BWP U339 ( .I(n272), .Z(oData[7]) );
+  AO22D0BWP U340 ( .A1(n161), .A2(oData[7]), .B1(N73), .B2(n162), .Z(n188) );
+  CKND16BWP U341 ( .I(n150), .ZN(oData[8]) );
+  NR3D1BWP U342 ( .A1(n271), .A2(\sub_46_2/carry [8]), .A3(n197), .ZN(n191) );
+  AOI221D4BWP U343 ( .A1(n271), .A2(n140), .B1(n162), .B2(n150), .C(n194), 
+        .ZN(n195) );
+  NR2D0BWP U344 ( .A1(n229), .A2(n124), .ZN(\U_multiplier_0/mult_10/ab[7][4] )
+         );
+  CKND1BWP U345 ( .I(prod[2]), .ZN(n144) );
+  OAI21D1BWP U346 ( .A1(n210), .A2(n252), .B(n213), .ZN(n206) );
+  OAI21D1BWP U347 ( .A1(n253), .A2(n220), .B(n222), .ZN(n215) );
+  NR2XD0BWP U348 ( .A1(n217), .A2(n216), .ZN(n218) );
+  AOI21D1BWP U349 ( .A1(n215), .A2(n118), .B(n218), .ZN(n210) );
+  INVD1BWP U350 ( .I(n216), .ZN(n118) );
+  AOI21D1BWP U351 ( .A1(n206), .A2(n116), .B(n209), .ZN(n203) );
+  ND2D1BWP U352 ( .A1(n212), .A2(n119), .ZN(n213) );
+  ND2D1BWP U353 ( .A1(n221), .A2(n117), .ZN(n222) );
+  ND2D1BWP U354 ( .A1(n201), .A2(n202), .ZN(n220) );
+  INVD1BWP U355 ( .I(n252), .ZN(n119) );
+  INVD1BWP U356 ( .I(n253), .ZN(n117) );
+  OAI21D1BWP U357 ( .A1(n221), .A2(n117), .B(n222), .ZN(n219) );
+  AOI21D1BWP U358 ( .A1(n216), .A2(n217), .B(n218), .ZN(n214) );
+  OAI21D1BWP U359 ( .A1(n212), .A2(n119), .B(n213), .ZN(n211) );
+  CKND1BWP U360 ( .I(n241), .ZN(n130) );
+  CKND2D1BWP U361 ( .A1(n241), .A2(n133), .ZN(n228) );
+  ND2D1BWP U362 ( .A1(n239), .A2(n133), .ZN(n225) );
+  ND2D1BWP U363 ( .A1(n238), .A2(n133), .ZN(n223) );
+  ND2D1BWP U364 ( .A1(n237), .A2(n133), .ZN(n227) );
+  ND2D1BWP U365 ( .A1(n240), .A2(n133), .ZN(n226) );
+  ND2D1BWP U366 ( .A1(\U_multiplier_0/mult_10/SUMB[7][3] ), .A2(
+        \U_multiplier_0/mult_10/CARRYB[7][2] ), .ZN(n217) );
+  INVD1BWP U367 ( .I(n207), .ZN(n116) );
+  AN3XD1BWP U368 ( .A1(\U_multiplier_0/mult_10/SUMB[7][5] ), .A2(n116), .A3(
+        \U_multiplier_0/mult_10/CARRYB[7][4] ), .Z(n209) );
+  ND2D1BWP U369 ( .A1(n135), .A2(n238), .ZN(n248) );
+  ND2D1BWP U370 ( .A1(n135), .A2(n237), .ZN(n245) );
+  ND2D1BWP U371 ( .A1(n135), .A2(n244), .ZN(n243) );
+  ND2D1BWP U372 ( .A1(n135), .A2(n239), .ZN(n249) );
+  ND2D1BWP U373 ( .A1(n135), .A2(n240), .ZN(n250) );
+  AOI21D1BWP U374 ( .A1(n207), .A2(n208), .B(n209), .ZN(n205) );
+  ND2D1BWP U375 ( .A1(\U_multiplier_0/mult_10/CARRYB[7][4] ), .A2(
+        \U_multiplier_0/mult_10/SUMB[7][5] ), .ZN(n208) );
+  AN2XD1BWP U376 ( .A1(\U_multiplier_0/mult_10/SUMB[7][4] ), .A2(
+        \U_multiplier_0/mult_10/CARRYB[7][3] ), .Z(n212) );
+  AN2XD1BWP U377 ( .A1(\U_multiplier_0/mult_10/CARRYB[7][1] ), .A2(
+        \U_multiplier_0/mult_10/SUMB[7][2] ), .Z(n221) );
+  ND2D1BWP U378 ( .A1(n203), .A2(n204), .ZN(mulOut[14]) );
+  AN2XD1BWP U379 ( .A1(\U_multiplier_0/mult_10/SUMB[7][1] ), .A2(
+        \U_multiplier_0/mult_10/CARRYB[7][0] ), .Z(n201) );
+  NR2XD0BWP U380 ( .A1(n203), .A2(n204), .ZN(\U_multiplier_0/mult_10/FS_1/n17 ) );
+  OAI222D4BWP U381 ( .A1(n146), .A2(n246), .B1(n147), .B2(n247), .C1(n141), 
+        .C2(n127), .ZN(n239) );
+  OAI222D4BWP U382 ( .A1(n147), .A2(n246), .B1(n148), .B2(n247), .C1(n141), 
+        .C2(n125), .ZN(n238) );
+  OAI222D4BWP U383 ( .A1(n148), .A2(n246), .B1(n149), .B2(n247), .C1(n141), 
+        .C2(n123), .ZN(n237) );
+  OAI222D4BWP U384 ( .A1(n145), .A2(n246), .B1(n146), .B2(n247), .C1(n141), 
+        .C2(n129), .ZN(n240) );
+  NR2D0BWP U385 ( .A1(n120), .A2(n231), .ZN(\U_multiplier_0/mult_10/ab[6][6] )
+         );
+  NR2D0BWP U386 ( .A1(n229), .A2(n122), .ZN(\U_multiplier_0/mult_10/ab[7][5] )
+         );
+  OA222D2BWP U387 ( .A1(n142), .A2(n246), .B1(n144), .B2(n247), .C1(n141), 
+        .C2(n132), .Z(n230) );
+  INVD1BWP U388 ( .I(\add_46_2/carry [8]), .ZN(n143) );
+  NR2D0BWP U389 ( .A1(n230), .A2(n236), .ZN(\U_multiplier_0/mult_10/ab[2][0] )
+         );
+  NR2D0BWP U390 ( .A1(n120), .A2(n229), .ZN(n251) );
+  NR2D0BWP U391 ( .A1(n229), .A2(n126), .ZN(\U_multiplier_0/mult_10/ab[7][3] )
+         );
+  IND3D1BWP U392 ( .A1(n229), .B1(n244), .B2(
+        \U_multiplier_0/mult_10/CARRYB[7][5] ), .ZN(n204) );
+  NR2D0BWP U393 ( .A1(n229), .A2(n230), .ZN(\U_multiplier_0/mult_10/ab[7][0] )
+         );
+  NR2D0BWP U394 ( .A1(n230), .A2(n231), .ZN(\U_multiplier_0/mult_10/ab[6][0] )
+         );
+  NR2D0BWP U395 ( .A1(n229), .A2(n128), .ZN(\U_multiplier_0/mult_10/ab[7][2] )
+         );
+  NR2D0BWP U396 ( .A1(n229), .A2(n130), .ZN(\U_multiplier_0/mult_10/ab[7][1] )
+         );
+  INVD1BWP U397 ( .I(n255), .ZN(n138) );
+  NR3D0BWP U398 ( .A1(n226), .A2(n224), .A3(n126), .ZN(
+        \U_multiplier_0/mult_10/n5 ) );
+  NR2D0BWP U399 ( .A1(n128), .A2(n236), .ZN(\U_multiplier_0/mult_10/ab[2][2] )
+         );
+  NR3D0BWP U400 ( .A1(n225), .A2(n224), .A3(n124), .ZN(
+        \U_multiplier_0/mult_10/n6 ) );
+  NR2D0BWP U401 ( .A1(n126), .A2(n236), .ZN(\U_multiplier_0/mult_10/ab[2][3] )
+         );
+  NR3D0BWP U402 ( .A1(n223), .A2(n224), .A3(n122), .ZN(
+        \U_multiplier_0/mult_10/n7 ) );
+  NR2D0BWP U403 ( .A1(n124), .A2(n236), .ZN(\U_multiplier_0/mult_10/ab[2][4] )
+         );
+  NR2XD0BWP U404 ( .A1(n120), .A2(n242), .ZN(\U_multiplier_0/mult_10/ab[1][6] ) );
+  NR3D0BWP U405 ( .A1(n227), .A2(n120), .A3(n224), .ZN(
+        \U_multiplier_0/mult_10/n4 ) );
+  NR2D0BWP U406 ( .A1(n122), .A2(n236), .ZN(\U_multiplier_0/mult_10/ab[2][5] )
+         );
+  NR3D0BWP U407 ( .A1(n228), .A2(n224), .A3(n128), .ZN(
+        \U_multiplier_0/mult_10/n3 ) );
+  NR2D0BWP U408 ( .A1(n130), .A2(n236), .ZN(\U_multiplier_0/mult_10/ab[2][1] )
+         );
+  NR2D0BWP U409 ( .A1(n128), .A2(n235), .ZN(\U_multiplier_0/mult_10/ab[3][2] )
+         );
+  NR2D0BWP U410 ( .A1(n126), .A2(n235), .ZN(\U_multiplier_0/mult_10/ab[3][3] )
+         );
+  NR2D0BWP U411 ( .A1(n124), .A2(n235), .ZN(\U_multiplier_0/mult_10/ab[3][4] )
+         );
+  NR2D0BWP U412 ( .A1(n120), .A2(n236), .ZN(\U_multiplier_0/mult_10/ab[2][6] )
+         );
+  NR2D0BWP U413 ( .A1(n122), .A2(n235), .ZN(\U_multiplier_0/mult_10/ab[3][5] )
+         );
+  NR2D0BWP U414 ( .A1(n128), .A2(n234), .ZN(\U_multiplier_0/mult_10/ab[4][2] )
+         );
+  NR2D0BWP U415 ( .A1(n126), .A2(n234), .ZN(\U_multiplier_0/mult_10/ab[4][3] )
+         );
+  NR2D0BWP U416 ( .A1(n124), .A2(n234), .ZN(\U_multiplier_0/mult_10/ab[4][4] )
+         );
+  NR2D0BWP U417 ( .A1(n120), .A2(n235), .ZN(\U_multiplier_0/mult_10/ab[3][6] )
+         );
+  NR2D0BWP U418 ( .A1(n122), .A2(n234), .ZN(\U_multiplier_0/mult_10/ab[4][5] )
+         );
+  NR2D0BWP U419 ( .A1(n230), .A2(n235), .ZN(\U_multiplier_0/mult_10/ab[3][0] )
+         );
+  NR3D0BWP U420 ( .A1(n228), .A2(n224), .A3(n230), .ZN(
+        \U_multiplier_0/mult_10/CARRYB[1][0] ) );
+  NR2D0BWP U421 ( .A1(n130), .A2(n235), .ZN(\U_multiplier_0/mult_10/ab[3][1] )
+         );
+  NR2D0BWP U422 ( .A1(n128), .A2(n233), .ZN(\U_multiplier_0/mult_10/ab[5][2] )
+         );
+  NR2D0BWP U423 ( .A1(n126), .A2(n233), .ZN(\U_multiplier_0/mult_10/ab[5][3] )
+         );
+  NR2D0BWP U424 ( .A1(n124), .A2(n233), .ZN(\U_multiplier_0/mult_10/ab[5][4] )
+         );
+  NR2D0BWP U425 ( .A1(n130), .A2(n234), .ZN(\U_multiplier_0/mult_10/ab[4][1] )
+         );
+  NR2D0BWP U426 ( .A1(n128), .A2(n231), .ZN(\U_multiplier_0/mult_10/ab[6][2] )
+         );
+  NR2D0BWP U427 ( .A1(n126), .A2(n231), .ZN(\U_multiplier_0/mult_10/ab[6][3] )
+         );
+  NR2D0BWP U428 ( .A1(n230), .A2(n233), .ZN(\U_multiplier_0/mult_10/ab[5][0] )
+         );
+  NR2D0BWP U429 ( .A1(n230), .A2(n234), .ZN(\U_multiplier_0/mult_10/ab[4][0] )
+         );
+  NR2D0BWP U430 ( .A1(n130), .A2(n233), .ZN(\U_multiplier_0/mult_10/ab[5][1] )
+         );
+  NR2D0BWP U431 ( .A1(n130), .A2(n231), .ZN(\U_multiplier_0/mult_10/ab[6][1] )
+         );
+  NR2D0BWP U432 ( .A1(n120), .A2(n234), .ZN(\U_multiplier_0/mult_10/ab[4][6] )
+         );
+  NR2D0BWP U433 ( .A1(n122), .A2(n233), .ZN(\U_multiplier_0/mult_10/ab[5][5] )
+         );
+  NR2D0BWP U434 ( .A1(n124), .A2(n231), .ZN(\U_multiplier_0/mult_10/ab[6][4] )
+         );
+  NR2D0BWP U435 ( .A1(n120), .A2(n233), .ZN(\U_multiplier_0/mult_10/ab[5][6] )
+         );
+  NR2D0BWP U436 ( .A1(n122), .A2(n231), .ZN(\U_multiplier_0/mult_10/ab[6][5] )
+         );
+  CKND0BWP U437 ( .I(n45), .ZN(n139) );
+  CKND2BWP U438 ( .I(n165), .ZN(n136) );
+  CKND2D1BWP U439 ( .A1(n198), .A2(n141), .ZN(n197) );
+  AOI21D1BWP U440 ( .A1(n141), .A2(n153), .B(n139), .ZN(n155) );
+  IIND4D0BWP U441 ( .A1(n160), .A2(n191), .B1(n192), .B2(n193), .ZN(n53) );
+  ND3D1BWP U442 ( .A1(n136), .A2(n121), .A3(n189), .ZN(n192) );
+  AOI31D1BWP U443 ( .A1(\add_46_2/carry [8]), .A2(n162), .A3(n271), .B(n191), 
+        .ZN(n196) );
+  AOI221D4BWP U444 ( .A1(data[0]), .A2(n257), .B1(N25), .B2(iDataValid), .C(
+        n137), .ZN(n224) );
+  INVD1BWP U445 ( .I(n156), .ZN(n137) );
+  CKND2D1BWP U446 ( .A1(prod[0]), .A2(n151), .ZN(\sub_46_2/n1 ) );
+  OAI32D1BWP U447 ( .A1(n165), .A2(N41), .A3(n185), .B1(n186), .B2(n123), .ZN(
+        n183) );
+  AOI21D1BWP U448 ( .A1(n185), .A2(n136), .B(n160), .ZN(n186) );
+  OAI32D1BWP U449 ( .A1(n165), .A2(N40), .A3(n181), .B1(n182), .B2(n125), .ZN(
+        n179) );
+  AOI21D1BWP U450 ( .A1(n181), .A2(n136), .B(n160), .ZN(n182) );
+  OAI32D1BWP U451 ( .A1(n165), .A2(N39), .A3(n177), .B1(n178), .B2(n127), .ZN(
+        n175) );
+  AOI21D1BWP U452 ( .A1(n177), .A2(n136), .B(n160), .ZN(n178) );
+  OAI32D1BWP U453 ( .A1(n165), .A2(N38), .A3(n173), .B1(n174), .B2(n129), .ZN(
+        n171) );
+  AOI21D1BWP U454 ( .A1(n173), .A2(n136), .B(n160), .ZN(n174) );
+  OAI32D1BWP U455 ( .A1(n165), .A2(N37), .A3(n169), .B1(n170), .B2(n131), .ZN(
+        n167) );
+  AOI21D1BWP U456 ( .A1(n169), .A2(n136), .B(n160), .ZN(n170) );
+  OAI32D1BWP U457 ( .A1(n165), .A2(N42), .A3(n189), .B1(n190), .B2(n121), .ZN(
+        n187) );
+  AOI21D1BWP U458 ( .A1(n189), .A2(n136), .B(n160), .ZN(n190) );
+  ND3D1BWP U459 ( .A1(n101), .A2(n138), .A3(cnt[1]), .ZN(n156) );
+  INVD1BWP U460 ( .I(prod[5]), .ZN(n147) );
+  INVD1BWP U461 ( .I(prod[6]), .ZN(n148) );
+  INVD1BWP U462 ( .I(prod[4]), .ZN(n146) );
+  INVD1BWP U463 ( .I(prod[3]), .ZN(n145) );
+  ND2D1BWP U464 ( .A1(cnt[0]), .A2(n141), .ZN(n255) );
+  INVD1BWP U465 ( .I(N41), .ZN(n123) );
+  INVD1BWP U466 ( .I(N40), .ZN(n125) );
+  INVD1BWP U467 ( .I(N39), .ZN(n127) );
+  INVD1BWP U468 ( .I(N38), .ZN(n129) );
+  INVD1BWP U469 ( .I(N37), .ZN(n131) );
+  INR2XD0BWP U470 ( .A1(prod[0]), .B1(n151), .ZN(\add_46_2/n1 ) );
+  INVD1BWP U471 ( .I(N36), .ZN(n132) );
+  NR2XD0BWP U472 ( .A1(cnt[1]), .A2(n199), .ZN(n200) );
+  OAI221D1BWP U473 ( .A1(n157), .A2(n151), .B1(\sub_46_2/n1 ), .B2(n158), .C(
+        n159), .ZN(n61) );
+  OAI21D1BWP U474 ( .A1(n160), .A2(n136), .B(N25), .ZN(n159) );
+  IAO21D1BWP U475 ( .A1(n158), .A2(prod[0]), .B(n161), .ZN(n157) );
+  NR2XD0BWP U476 ( .A1(n162), .A2(n140), .ZN(n158) );
+  OAI32D1BWP U477 ( .A1(n165), .A2(N36), .A3(n134), .B1(n166), .B2(n132), .ZN(
+        n163) );
+  AOI21D1BWP U478 ( .A1(n136), .A2(n134), .B(n160), .ZN(n166) );
+  OAI32D1BWP U479 ( .A1(n139), .A2(cnt[1]), .A3(n255), .B1(n155), .B2(n154), 
+        .ZN(n62) );
+  NR2XD1BWP U480 ( .A1(N36), .A2(N25), .ZN(n169) );
+  INVD1BWP U481 ( .I(N25), .ZN(n134) );
+  INVD1BWP U482 ( .I(prod[1]), .ZN(n142) );
+  INR2XD4BWP U483 ( .A1(oDataValid), .B1(iDataValid), .ZN(n161) );
+endmodule
+

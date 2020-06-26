@@ -1,0 +1,76 @@
+ 
+****************************************
+Report : timing
+        -path full
+        -delay max
+        -max_paths 1
+Design : exp_taylor_pp
+Version: N-2017.09-SP5
+Date   : Mon Dec 10 18:46:13 2018
+****************************************
+
+Operating Conditions: NCCOM   Library: tcbn40lpbwptc
+Wire Load Model Mode: segmented
+
+  Startpoint: U_computing_kernel/sum_4_reg[1]
+              (rising edge-triggered flip-flop clocked by clk)
+  Endpoint: oDataBuf_reg[24]
+            (rising edge-triggered flip-flop clocked by clk)
+  Path Group: clk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  exp_taylor_pp      TSMC32K_Lowk_Conservative
+                                           tcbn40lpbwptc
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  clock clk (rise edge)                                   0.00       0.00
+  clock network delay (ideal)                             0.00       0.00
+  U_computing_kernel/sum_4_reg[1]/CP (DFCNQD1BWP)         0.00       0.00 r
+  U_computing_kernel/sum_4_reg[1]/Q (DFCNQD1BWP)          0.13       0.13 r
+  U1244/Z (BUFFD6BWP)                                     0.06       0.19 r
+  U887/ZN (CKND2D1BWP)                                    0.05       0.24 f
+  U842/ZN (NR3D0BWP)                                      0.08       0.32 r
+  mult_72/S1_2_0/CO (FA1D0BWP)                            0.15       0.46 r
+  mult_72/S1_3_0/CO (FA1D0BWP)                            0.13       0.60 r
+  mult_72/S1_4_0/CO (FA1D0BWP)                            0.13       0.73 r
+  mult_72/S1_5_0/CO (FA1D0BWP)                            0.13       0.86 r
+  mult_72/S1_6_0/CO (FA1D0BWP)                            0.13       0.99 r
+  mult_72/S1_7_0/CO (FA1D0BWP)                            0.13       1.12 r
+  mult_72/S1_8_0/CO (FA1D0BWP)                            0.13       1.25 r
+  mult_72/S4_0/CO (FA1D0BWP)                              0.16       1.41 r
+  U849/Z (AN2XD1BWP)                                      0.07       1.48 r
+  U839/ZN (ND2D1BWP)                                      0.02       1.50 f
+  U851/ZN (NR2XD0BWP)                                     0.04       1.54 r
+  U845/ZN (NR2D1BWP)                                      0.02       1.56 f
+  U595/Z (OA21D1BWP)                                      0.06       1.62 f
+  U589/Z (OA21D1BWP)                                      0.07       1.69 f
+  U583/Z (OA21D1BWP)                                      0.07       1.75 f
+  U577/Z (OA21D1BWP)                                      0.07       1.82 f
+  U571/Z (OA21D1BWP)                                      0.07       1.88 f
+  U565/Z (OA21D1BWP)                                      0.07       1.95 f
+  U559/Z (OA21D1BWP)                                      0.07       2.01 f
+  U553/Z (OA21D1BWP)                                      0.07       2.08 f
+  U546/Z (OA21D1BWP)                                      0.06       2.14 f
+  U840/ZN (IOA21D1BWP)                                    0.06       2.20 f
+  U706/Z (OA22D1BWP)                                      0.08       2.28 f
+  U855/ZN (CKND2D0BWP)                                    0.04       2.32 r
+  oDataBuf_reg[24]/D (DFCNQD1BWP)                         0.00       2.32 r
+  data arrival time                                                  2.32
+
+  clock clk (rise edge)                                   2.50       2.50
+  clock network delay (ideal)                             0.00       2.50
+  clock uncertainty                                      -0.15       2.35
+  oDataBuf_reg[24]/CP (DFCNQD1BWP)                        0.00       2.35 r
+  library setup time                                     -0.03       2.32
+  data required time                                                 2.32
+  --------------------------------------------------------------------------
+  data required time                                                 2.32
+  data arrival time                                                 -2.32
+  --------------------------------------------------------------------------
+  slack (MET)                                                        0.00
+
+
+1
